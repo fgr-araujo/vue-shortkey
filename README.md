@@ -8,7 +8,7 @@ Add the shortkey directive to the elements that accept the shortcut.
 The shortkey must have explicitly which keys will be used.
 
 #### Running functions
-<sub>The code below ensures that the key combination ctrl + alt + o will perform the 'theAction' function.</sub>
+<sub>The code below ensures that the key combination ctrl + alt + o will perform the 'theAction' method.</sub>
 ```html
 <button v-shortkey.ctrl.alt.o="theAction">Open</button>
 ```
