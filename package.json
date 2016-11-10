@@ -1,0 +1,26 @@
+{
+  "name": "vue-shortkey",
+  "version": "1.0.0",
+  "description": "A Vue plugin to create the shortcuts for your features",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iFgR/vue-shortkey.git"
+  },
+  "keywords": [
+    "vue",
+    "vuejs",
+    "shortcut",
+    "shortkey",
+    "plugin"
+  ],
+  "author": "FgR",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iFgR/vue-shortkey/issues"
+  },
+  "homepage": "https://github.com/iFgR/vue-shortkey#readme"
+}
