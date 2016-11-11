@@ -3,7 +3,15 @@
 
 Vue-ShortKey - plugin for Vue.js
 
+## Install
+```
+npm install vue-shortkey --save
+```
+
 ## Usage
+```javascript
+Vue.use(require('vue-shortkey'))
+```
 Add the shortkey directive to the elements that accept the shortcut.
 The shortkey must have explicitly which keys will be used.
 
@@ -15,7 +23,6 @@ The shortkey must have explicitly which keys will be used.
 
 #### Setting the focus
 If the name of a function is not informed, the element will receive the focus.
-
 <sub>The code below reserves the F2 key to set the focus to the input element.</sub>
 ```html
 <input type="text" v-shortkey.f2 v-model="name" />
