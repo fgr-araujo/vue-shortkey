@@ -3,7 +3,6 @@ let mapFunctions = {}
 
 ShortKey.install = function (Vue) {
   Vue.directive('shortkey', {
-    acceptStatement: true,
     bind: function (el, binding, vnode) {
       // Mapping the commands
       let k = ''
