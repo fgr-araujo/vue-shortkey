@@ -3,7 +3,6 @@ let mapFunctions = {}
 
 ShortKey.install = function (Vue) {
   Vue.directive('shortkey', {
-    acceptStatement: true,
     bind: function (el, binding, vnode) {
       // Mapping the commands
       let k = ''
@@ -26,7 +25,6 @@ ShortKey.install = function (Vue) {
 
 ShortKey.decodeKey = function (pKey) {
   let k = ''
-  // console.log('theKey......', pKey)
   if (pKey.key === 'Shift' || pKey.shiftKey === true) { k += 'shift' }
   if (pKey.key === 'Control' || pKey.ctrlKey === true) { k += 'ctrl' }
   if (pKey.key === 'Alt' || pKey.altKey === true) { k += 'alt' }
