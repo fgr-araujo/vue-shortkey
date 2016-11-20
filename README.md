@@ -52,7 +52,18 @@ The example below shows how to do this
 
 You can make any combination of keys as well as reserve a single key.
 ```html
-<... v-shortkey.q .../>
-<... v-shortkey.ctrl.p .../>
-<... v-shortkey.ctrl.alt.x .../>
+<input type="text" v-shortkey.q />
+<button v-shortkey.ctrl.p="foo()"></button>
+<textarea v-shortkey.ctrl.alt.x></textarea>
+```
+
+#### Avoided fields
+You can avoid shortcuts within fields if you really need it. This can be done in two ways:
+* Preventing a given element from executing the shortcut by adding the **v-shortkey**.void tag in the body of the element
+```html
+<textarea v-shortkey.void></textaea>
+```
+* Generalizing type of element that will not perform shortcut. To do this, insert a list of elements in the global method.
+```javascript
+Vue.use('vue-shortkey', { prevent: ['input', 'textarea'] })
 ```

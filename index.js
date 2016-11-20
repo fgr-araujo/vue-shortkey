@@ -1,7 +1,10 @@
 let ShortKey = {}
 let mapFunctions = {}
+let objAvoided = []
+let elementAvoided = []
 
-ShortKey.install = function (Vue) {
+ShortKey.install = function (Vue, options) {
+  elementAvoided = [...options.prevent]
   Vue.directive('shortkey', {
     bind: function (el, binding, vnode) {
       // Mapping the commands
@@ -13,6 +16,7 @@ ShortKey.install = function (Vue) {
       if (b.hasOwnProperty('alt')) { k += 'alt'; delete b.alt }
       if (b.hasOwnProperty('altgraph')) { k += 'altgraph'; delete b.altgraph }
       if (b.hasOwnProperty('push')) { pushButton = true; delete b.push }
+      if (b.hasOwnProperty('void')) { objAvoided.push(el); delete b.void }
       if (Object.keys(b).length > 0) { k += Object.keys(b)[0].toLowerCase() }
       mapFunctions[k] = {
         'ps': pushButton,
@@ -51,7 +55,7 @@ ShortKey.keyUp = function (pKey) {
 ;(function () {
   document.addEventListener('keydown', (pKey) => {
     let decodedKey = ShortKey.decodeKey(pKey)
-    if (mapFunctions[decodedKey]) {
+    if (mapFunctions[decodedKey] && !objAvoided.find(r => r === document.activeElement) && !elementAvoided.find(r => r === document.activeElement.tagName.toLowerCase() )) {
       pKey.preventDefault()
       pKey.stopPropagation()
       if (mapFunctions[decodedKey].fn) {
@@ -63,7 +67,7 @@ ShortKey.keyUp = function (pKey) {
   }, true)
   document.addEventListener('keyup', (pKey) => {
     let decodedKey = ShortKey.decodeKey(pKey)
-    if (mapFunctions[decodedKey]) {
+    if (mapFunctions[decodedKey] && !mapFunctions[decodedKey].fn === 'void') {
       pKey.preventDefault()
       pKey.stopPropagation()
       if (mapFunctions[decodedKey].ps) {
