@@ -4,7 +4,7 @@ let objAvoided = []
 let elementAvoided = []
 
 ShortKey.install = function (Vue, options) {
-  elementAvoided = [...options.prevent]
+  elementAvoided = [...(options && options.prevent ? options.prevent : [])]
   Vue.directive('shortkey', {
     bind: function (el, binding, vnode) {
       // Mapping the commands
