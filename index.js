@@ -9,7 +9,7 @@ ShortKey.install = function (Vue, options) {
   Vue.directive('shortkey', {
     bind: function (el, binding, vnode) {
       // Mapping the commands
-      let b = binding.value
+      let b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
       let pushButton = binding.modifiers.push === true
       let avoid = binding.modifiers.avoid === true
       let focus = binding.modifiers.focus === true
