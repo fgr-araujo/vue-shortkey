@@ -2,26 +2,29 @@ let ShortKey = {}
 let mapFunctions = {}
 let objAvoided = []
 let elementAvoided = []
+let keyPressed = false
 
 ShortKey.install = function (Vue, options) {
   elementAvoided = [...(options && options.prevent ? options.prevent : [])]
   Vue.directive('shortkey', {
     bind: function (el, binding, vnode) {
       // Mapping the commands
-      let k = ''
-      let b = binding.modifiers
-      let pushButton = false
-      if (b.hasOwnProperty('shift')) { k += 'shift'; delete b.shift }
-      if (b.hasOwnProperty('ctrl')) { k += 'ctrl'; delete b.ctrl }
-      if (b.hasOwnProperty('alt')) { k += 'alt'; delete b.alt }
-      if (b.hasOwnProperty('altgraph')) { k += 'altgraph'; delete b.altgraph }
-      if (b.hasOwnProperty('push')) { pushButton = true; delete b.push }
-      if (b.hasOwnProperty('void')) { objAvoided.push(el); delete b.void }
-      if (Object.keys(b).length > 0) { k += Object.keys(b)[0].toLowerCase() }
-      mapFunctions[k] = {
-        'ps': pushButton,
-        'fn': vnode.context.$vnode.child[binding.expression],
-        'el': vnode.elm
+      let b = binding.value
+      let pushButton = binding.modifiers.push === true
+      let avoid = binding.modifiers.avoid === true
+      let focus = binding.modifiers.focus === true
+      let once = binding.modifiers.once === true
+      if (pushButton) { delete b.push }
+      if (avoid) {
+        objAvoided.push(el)
+      } else {
+        let k = b.join('')
+        mapFunctions[k] = {
+          'ps': pushButton,
+          'oc': once,
+          'fn': !focus,
+          'el': vnode.elm
+        }
       }
     }
   })
@@ -37,43 +40,50 @@ ShortKey.decodeKey = function (pKey) {
   if (pKey.key === 'ArrowRight') { k += 'arrowright' }
   if (pKey.key === 'ArrowDown') { k += 'arrowdown' }
   if (pKey.key === 'AltGraph') { k += 'altgraph' }
+  if (pKey.key === 'Escape') { k += 'esc' }
   if ((pKey.key && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
   return k
 }
 
 ShortKey.keyDown = function (pKey) {
-  if (mapFunctions[pKey]) {
-    mapFunctions[pKey].fn()
+  if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps)|| (mapFunctions[pKey].ps && !keyPressed)) {
+    var e = document.createEvent('HTMLEvents')
+    e.initEvent('shortkey', true, true)
+    mapFunctions[pKey].el.dispatchEvent(e)
   }
 }
 ShortKey.keyUp = function (pKey) {
-  if (mapFunctions[pKey]) {
-    mapFunctions[pKey].fn()
-  }
+  var e = document.createEvent('HTMLEvents')
+  e.initEvent('shortkey', true, true)
+  mapFunctions[pKey].el.dispatchEvent(e)
 }
 
 ;(function () {
   document.addEventListener('keydown', (pKey) => {
     let decodedKey = ShortKey.decodeKey(pKey)
+    // Check evict
     if (mapFunctions[decodedKey] && !objAvoided.find(r => r === document.activeElement) && !elementAvoided.find(r => r === document.activeElement.tagName.toLowerCase() )) {
       pKey.preventDefault()
       pKey.stopPropagation()
       if (mapFunctions[decodedKey].fn) {
         ShortKey.keyDown(decodedKey)
-      } else {
+        keyPressed = true
+      } else if (!keyPressed) {
         mapFunctions[decodedKey].el.focus()
+        keyPressed = true
       }
     }
   }, true)
   document.addEventListener('keyup', (pKey) => {
     let decodedKey = ShortKey.decodeKey(pKey)
-    if (mapFunctions[decodedKey] && !mapFunctions[decodedKey].fn === 'void') {
+    if (mapFunctions[decodedKey] && !objAvoided.find(r => r === document.activeElement) && !elementAvoided.find(r => r === document.activeElement.tagName.toLowerCase() )) {
       pKey.preventDefault()
       pKey.stopPropagation()
-      if (mapFunctions[decodedKey].ps) {
+      if (mapFunctions[decodedKey].oc || mapFunctions[decodedKey].ps) {
         ShortKey.keyUp(decodedKey)
       }
     }
+    keyPressed = false
   }, true)
 })()
 
