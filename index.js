@@ -10,6 +10,7 @@ ShortKey.install = function (Vue, options) {
     bind: function (el, binding, vnode) {
       // Mapping the commands
       let b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
+      let persistent = binding.modifiers.persistent === true
       let pushButton = binding.modifiers.push === true
       let avoid = binding.modifiers.avoid === true
       let focus = binding.modifiers.focus === true
@@ -20,12 +21,25 @@ ShortKey.install = function (Vue, options) {
       } else {
         let k = b.join('')
         mapFunctions[k] = {
+          'pr': persistent,
           'ps': pushButton,
           'oc': once,
           'fn': !focus,
           'el': vnode.elm
         }
       }
+    },
+    unbind: function (el, binding) {
+      let b = []
+      b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
+      let pushButton = binding.modifiers.push === true
+      if (pushButton) { delete b.push }
+      let k = b.join('')
+      if (mapFunctions[k].el === el) delete mapFunctions[k]
+
+      objAvoided.filter((itm) => {
+        return itm === el ? false : true
+      })
     }
   })
 }
