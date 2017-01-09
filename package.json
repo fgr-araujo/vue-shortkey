@@ -1,6 +1,6 @@
 {
   "name": "vue-shortkey",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "A Vue plugin to create the shortcuts for your features",
   "main": "index.js",
   "scripts": {
