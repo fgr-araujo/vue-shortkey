@@ -1,7 +1,7 @@
 {
   "name": "vue-shortkey",
   "description": "A Vue.js project",
-  "version": "1.0.0",
+  "version": "2.0.3",
   "author": "iFgR <ifgr.fagner@gmail.com>",
   "private": true,
   "scripts": {
