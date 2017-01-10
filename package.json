@@ -1,7 +1,7 @@
 {
   "name": "vue-shortkey",
   "description": "A Vue.js project",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "author": "iFgR <ifgr.fagner@gmail.com>",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
