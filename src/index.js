@@ -55,6 +55,7 @@ ShortKey.decodeKey = function (pKey) {
   if (pKey.key === 'ArrowDown') { k += 'arrowdown' }
   if (pKey.key === 'AltGraph') { k += 'altgraph' }
   if (pKey.key === 'Escape') { k += 'esc' }
+  if (pKey.key === 'Enter') { k += 'enter' }
   if ((pKey.key && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
   return k
 }
