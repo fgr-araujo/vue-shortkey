@@ -1,5 +1,4 @@
 # VUE-SHORTKEY
-====
 
 Vue-ShortKey - plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.
 
