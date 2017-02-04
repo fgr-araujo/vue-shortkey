@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   enable-background="new"
+   sodipodi:docname="shortkey.svg"
+   inkscape:export-filename="/home/fagneraraujo/dev/vue-shortkey/logo/shortkey.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90">
+  <defs
+     id="defs4">
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter4178-7">
+      <feBlend
+         inkscape:collect="always"
+         mode="normal"
+         in2="BackgroundImage"
+         id="feBlend4180-5" />
+    </filter>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="289.30009"
+     inkscape:cy="647.06711"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer7"
+     showgrid="true"
+     inkscape:snap-grids="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1056"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid4146" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="Background">
+    <g
+       transform="matrix(0.10781018,-0.10781018,0.10781018,0.10781018,-13.680106,62.637261)"
+       style="display:inline;fill-rule:evenodd"
+       id="g4201-3">
+      <rect
+         y="72.362206"
+         x="69.535751"
+         height="558.57147"
+         width="560.64276"
+         id="rect4144-6"
+         style="fill:#41b883;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:23.60000038;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer7"
+     inkscape:label="Path">
+    <path
+       style="display:inline;opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#35495e;stroke-width:80;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;filter:url(#filter4178-7)"
+       d="m 559.39584,107.95112 -431.30963,0 0,161.7157 300.59895,-0.90863 1.01015,167.97459 -430.29947,0 0,0"
+       id="path4148-3"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccccccc"
+       transform="matrix(0.10781018,-0.10781018,0.10781018,0.10781018,1.8544272,62.955758)" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#35495e;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;"
+       x="130.18774"
+       y="79.230225"
+       id="text4407"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4409"
+         x="130.18774"
+         y="79.230225">VUE</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#41b883;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="213.44661"
+       y="78.615959"
+       id="text4411"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan4413"
+         x="213.44661"
+         y="78.615959">SHORTKEY</tspan></text>
+  </g>
+</svg>
