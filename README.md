@@ -1,6 +1,5 @@
 ![vue-shortkey logo](/logo/shortkey.png)
 
-
 Vue-ShortKey - plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.
 
 ## Install
@@ -21,7 +20,7 @@ The shortkey must have explicitly which keys will be used.
 ```html
 <button v-shortkey="['ctrl', 'alt', 'o']" @shortkey="theAction()">Open</button>
 ```
-The function in the modifier __ @ shortkey__ will be called repeatedly while the key is pressed. To call the function only once, use the __once__ modifier
+The function in the modifier __@shortkey__ will be called repeatedly while the key is pressed. To call the function only once, use the __once__ modifier
 ```html
 <button v-shortkey.once="['ctrl', 'alt', 'o']" @shortkey="theAction()">Open</button>
 ```
