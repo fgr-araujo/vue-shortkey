@@ -1,4 +1,4 @@
-![vue-shortkey logo](/logo/shortkey.png)
+![vue-shortkey logo](https://github.com/iFgR/vue-shortkey/blob/master/logo/shortkey.png?raw=true)
 
 Vue-ShortKey - plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.
 
