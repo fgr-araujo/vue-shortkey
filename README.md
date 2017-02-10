@@ -52,7 +52,7 @@ The example below shows how to do this
 | Arrow Left  | arrowleft     |
 | Arrow Right | arrowright    |
 | Enter | enter    |
-| Escape | escape    |
+| Escape | esc    |
 | A - Z       | a-z           |
 
 You can make any combination of keys as well as reserve a single key.
