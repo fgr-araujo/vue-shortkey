@@ -56,11 +56,13 @@ ShortKey.decodeKey = function (pKey) {
   if (pKey.key === 'AltGraph') { k += 'altgraph' }
   if (pKey.key === 'Escape') { k += 'esc' }
   if (pKey.key === 'Enter') { k += 'enter' }
+  if (pKey.key === 'Tab') { k += 'tab' }
   if ((pKey.key && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
   return k
 }
 
 ShortKey.keyDown = function (pKey) {
+  console.log(pKey)
   if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps)|| (mapFunctions[pKey].ps && !keyPressed)) {
     var e = document.createEvent('HTMLEvents')
     e.initEvent('shortkey', true, true)
@@ -102,4 +104,12 @@ ShortKey.keyUp = function (pKey) {
   }, true)
 })()
 
-module.exports = ShortKey
+export default ShortKey
+
+if (typeof module != 'undefined' && module.exports) {
+  module.exports = ShortKey;
+} else if (typeof define == 'function' && define.amd) {
+  define( function () { return ShortKey; } );
+} else {
+  window.ShortKey = ShortKey;
+}
