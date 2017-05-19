@@ -7,9 +7,20 @@
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iFgR/vue-shortkey.git"
+  },
   "dependencies": {
     "vue": "^2.1.0"
   },
+  "keywords": [
+     "vue",
+     "vue-shortkey",
+     "shortcut",
+     "shortkey"
+   ],
+  "homepage": "https://github.com/iFgR/vue-shortkey/blob/master/README.md",
   "devDependencies": {
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
