@@ -66,9 +66,9 @@ You can make any combination of keys as well as reserve a single key.
 
 #### Avoided fields
 You can avoid shortcuts within fields if you really need it. This can be done in two ways:
-* Preventing a given element from executing the shortcut by adding the **v-shortkey**.void tag in the body of the element
+* Preventing a given element from executing the shortcut by adding the **v-shortkey.avoid** tag in the body of the element
 ```html
-<textarea v-shortkey.void></textaea>
+<textarea v-shortkey.avoid></textaea>
 ```
 * Generalizing type of element that will not perform shortcut. To do this, insert a list of elements in the global method.
 

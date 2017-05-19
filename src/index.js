@@ -62,7 +62,6 @@ ShortKey.decodeKey = function (pKey) {
 }
 
 ShortKey.keyDown = function (pKey) {
-  console.log(pKey)
   if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps)|| (mapFunctions[pKey].ps && !keyPressed)) {
     var e = document.createEvent('HTMLEvents')
     e.initEvent('shortkey', true, true)
