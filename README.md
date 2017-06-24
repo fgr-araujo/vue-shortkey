@@ -47,6 +47,7 @@ The example below shows how to do this
 | Control     | ctrl          |
 | Alt         | alt           |
 | Alt Graph   | altgraph      |
+| Super (Windows or Mac Cmd)   | meta      |
 | Arrow Up    | arrowup       |
 | Arrow Down  | arrowdown     |
 | Arrow Left  | arrowleft     |
@@ -74,6 +75,10 @@ You can avoid shortcuts within fields if you really need it. This can be done in
 
 ```javascript
 Vue.use('vue-shortkey', { prevent: ['input', 'textarea'] })
+```
+* Or even by class
+```javascript
+Vue.use('vue-shortkey', { prevent: ['.my-class-name', 'textarea.class-of-textarea'] })
 ```
 
 #### Other uses
