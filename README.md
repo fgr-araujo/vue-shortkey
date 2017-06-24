@@ -96,3 +96,8 @@ With the dynamism offered by Vue, you can easily create shortcuts dynamically
   </a>
 </li>
 ```
+
+### Unit Test
+```
+npm test
+```
