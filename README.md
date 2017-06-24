@@ -76,6 +76,7 @@ You can avoid shortcuts within fields if you really need it. This can be done in
 ```javascript
 Vue.use('vue-shortkey', { prevent: ['input', 'textarea'] })
 ```
+
 * Or even by class
 ```javascript
 Vue.use('vue-shortkey', { prevent: ['.my-class-name', 'textarea.class-of-textarea'] })
