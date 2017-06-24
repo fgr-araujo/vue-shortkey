@@ -75,36 +75,38 @@ ShortKey.keyUp = (pKey) => {
   mapFunctions[pKey].el.dispatchEvent(e)
 }
 
-;(function () {
-  document.addEventListener('keydown', (pKey) => {
-    const decodedKey = ShortKey.decodeKey(pKey)
+if (process.env.NODE_ENV !== 'test') {
+  ;(function () {
+    document.addEventListener('keydown', (pKey) => {
+      const decodedKey = ShortKey.decodeKey(pKey)
 
-    // Check evict
-    if (filteringElement(pKey)) {
-      pKey.preventDefault()
-      pKey.stopPropagation()
-      if (mapFunctions[decodedKey].fn) {
-        ShortKey.keyDown(decodedKey)
-        keyPressed = true
-      } else if (!keyPressed) {
-        mapFunctions[decodedKey].el.focus()
-        keyPressed = true
+      // Check evict
+      if (filteringElement(pKey)) {
+        pKey.preventDefault()
+        pKey.stopPropagation()
+        if (mapFunctions[decodedKey].fn) {
+          ShortKey.keyDown(decodedKey)
+          keyPressed = true
+        } else if (!keyPressed) {
+          mapFunctions[decodedKey].el.focus()
+          keyPressed = true
+        }
       }
-    }
-  }, true)
+    }, true)
 
-  document.addEventListener('keyup', (pKey) => {
-    const decodedKey = ShortKey.decodeKey(pKey)
-    if (filteringElement(pKey)) {
-      pKey.preventDefault()
-      pKey.stopPropagation()
-      if (mapFunctions[decodedKey].oc || mapFunctions[decodedKey].ps) {
-        ShortKey.keyUp(decodedKey)
+    document.addEventListener('keyup', (pKey) => {
+      const decodedKey = ShortKey.decodeKey(pKey)
+      if (filteringElement(pKey)) {
+        pKey.preventDefault()
+        pKey.stopPropagation()
+        if (mapFunctions[decodedKey].oc || mapFunctions[decodedKey].ps) {
+          ShortKey.keyUp(decodedKey)
+        }
       }
-    }
-    keyPressed = false
-  }, true)
-})()
+      keyPressed = false
+    }, true)
+  })()
+}
 
 const filteringElement = (pKey) => {
   const decodedKey = ShortKey.decodeKey(pKey)
@@ -135,7 +137,7 @@ const checkElementType = () => {
   return {avoidedTypes: elmTypeAvoid, avoidedClasses: elmClassAvoid}
 }
 
-export default ShortKey
+// export default ShortKey
 
 if (typeof module != 'undefined' && module.exports) {
   module.exports = ShortKey;
