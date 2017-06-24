@@ -3,9 +3,9 @@
   "description": "A plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.",
   "version": "2.1.0",
   "author": "iFgR <ifgr.fagner@gmail.com>",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development webpack --progress --watch",
-    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
+    "build": "node build/build.js"
   },
   "repository": {
     "type": "git",
@@ -15,17 +15,17 @@
     "vue": "^2.1.0"
   },
   "keywords": [
-     "vue",
-     "vue-shortkey",
-     "shortcut",
-     "shortkey"
-   ],
+    "vue",
+    "vue-shortkey",
+    "shortcut",
+    "shortkey"
+  ],
   "homepage": "https://github.com/iFgR/vue-shortkey/blob/master/README.md",
   "devDependencies": {
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-preset-es2015": "^6.0.0",
     "cross-env": "^3.0.0",
-    "webpack": "^2.1.0-beta.25"
+    "webpack": "^3.0.0"
   }
 }
