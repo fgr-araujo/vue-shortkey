@@ -1,8 +1,9 @@
 ![vue-shortkey logo](https://github.com/iFgR/vue-shortkey/blob/master/logo/shortkey.png?raw=true)
 
 ![CircleCI status](https://circleci.com/gh/iFgR/vue-shortkey.svg?style=shield&circle-token=:circle-token)
-[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 [![npm version](https://badge.fury.io/js/vue-shortkey.svg)](https://badge.fury.io/js/vue-shortkey)
+[![npm](https://img.shields.io/npm/dt/vue-shortkey.svg)](https://www.npmjs.com/package/vue-shortkey)
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
 Vue-ShortKey - plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.
 
