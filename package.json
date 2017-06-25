@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "node build/build.js",
-    "test": "NODE_ENV=test mocha --doc --watch test/**/*.js --compilers js:babel-register",
+    "test": "NODE_ENV=test mocha --doc test/**/*.js --compilers js:babel-register",
     "coverage": "nyc mocha test/**/*.js"
   },
   "repository": {
