@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "node build/build.js",
+    "build": "NODE_ENV=production node build/build.js",
     "test": "NODE_ENV=test mocha test/**/*.js --compilers js:babel-register",
     "coverage": "nyc mocha test/**/*.js"
   },
