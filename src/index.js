@@ -34,11 +34,13 @@ ShortKey.install = (Vue, options) => {
       b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
       let pushButton = binding.modifiers.push === true
       if (pushButton) { delete b.push }
-      let k = b.join('')
-      if (mapFunctions[k].el === el) delete mapFunctions[k]
+      if (b) {
+        let k = b.join('')
+        if (mapFunctions[k].el === el) delete mapFunctions[k]
+      }
 
-      objAvoided.filter((itm) => {
-        return itm === el ? false : true
+      objAvoided = objAvoided.filter((itm) => {
+        return !itm === el;
       })
     }
   })
@@ -116,7 +118,7 @@ const filteringElement = (pKey) => {
   const elementClassAvoid = elementSeparate.avoidedClasses
   const filterTypeAvoid = elementTypeAvoid.find(r => r === document.activeElement.tagName.toLowerCase())
   const filterClassAvoid = elementClassAvoid.find(r => r === '.' + document.activeElement.className.toLowerCase())
-  return mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid
+  return !objectAvoid && mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid
 }
 
 const checkElementType = () => {
