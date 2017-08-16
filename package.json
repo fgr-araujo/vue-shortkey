@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "NODE_ENV=production node build/build.js",
-    "test": "NODE_ENV=test mocha test/**/*.js --compilers js:babel-register",
+    "test": "NODE_ENV=test mocha test/index.test.js --compilers js:babel-register && karma start test/karma.conf.js --single-run",
     "coverage": "nyc mocha test/**/*.js"
   },
   "repository": {
@@ -25,6 +25,7 @@
   ],
   "homepage": "https://github.com/iFgR/vue-shortkey/blob/master/README.md",
   "devDependencies": {
+    "array.prototype.find": "^2.0.4",
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",
     "babel-preset-es2015": "^6.0.0",
@@ -32,6 +33,10 @@
     "babel-register": "^6.24.1",
     "chai": "^4.0.2",
     "cross-env": "^3.0.0",
+    "karma": "^1.7.0",
+    "karma-mocha": "^1.3.0",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-webpack": "^2.0.4",
     "mocha": "^3.4.2",
     "nyc": "^11.0.2",
     "webpack": "^3.0.0"
