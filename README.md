@@ -60,6 +60,11 @@ The example below shows how to do this
 | Enter | enter    |
 | Escape | escape    |
 | Tab | tab    |
+| Space       | space         |
+| Page Up     | pageup        |
+| Page Down   | pagedown      |
+| Home        | home          |
+| End         | end           |
 | A - Z       | a-z           |
 
 You can make any combination of keys as well as reserve a single key.

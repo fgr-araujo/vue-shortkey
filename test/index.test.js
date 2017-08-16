@@ -16,6 +16,11 @@ describe('Index.js', () => {
       expect(Shortkey.decodeKey({key: 'Escape'})).to.equal('esc')
       expect(Shortkey.decodeKey({key: 'Enter'})).to.equal('enter')
       expect(Shortkey.decodeKey({key: 'Tab'})).to.equal('tab')
+      expect(Shortkey.decodeKey({key: ' '})).to.equal('space')
+      expect(Shortkey.decodeKey({key: 'PageUp'})).to.equal('pageup')
+      expect(Shortkey.decodeKey({key: 'PageDown'})).to.equal('pagedown')
+      expect(Shortkey.decodeKey({key: 'Home'})).to.equal('home')
+      expect(Shortkey.decodeKey({key: 'End'})).to.equal('end')
     })
 
     it('Return a combined key', () => {
