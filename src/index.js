@@ -60,7 +60,12 @@ ShortKey.decodeKey = (pKey) => {
   if (pKey.key === 'Escape') { k += 'esc' }
   if (pKey.key === 'Enter') { k += 'enter' }
   if (pKey.key === 'Tab') { k += 'tab' }
-  if ((pKey.key && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
+  if (pKey.key === ' ') { k += 'space' }
+  if (pKey.key === 'PageUp') { k += 'pageup' }
+  if (pKey.key === 'PageDown') { k += 'pagedown' }
+  if (pKey.key === 'Home') { k += 'home' }
+  if (pKey.key === 'End') { k += 'end' }
+  if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
   return k
 }
 
