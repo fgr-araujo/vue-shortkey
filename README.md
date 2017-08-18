@@ -57,9 +57,9 @@ The example below shows how to do this
 | Arrow Down  | arrowdown     |
 | Arrow Left  | arrowleft     |
 | Arrow Right | arrowright    |
-| Enter | enter    |
-| Escape | escape    |
-| Tab | tab    |
+| Enter       | enter         |
+| Escape      | esc           |
+| Tab         | tab           |
 | Space       | space         |
 | Page Up     | pageup        |
 | Page Down   | pagedown      |
