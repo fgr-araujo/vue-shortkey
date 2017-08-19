@@ -14,6 +14,7 @@ const VM = pTemplate => new Vue({
   },
   methods: {
     foo() {
+      console.log('called----------------------')
       this.called = true
     }
   }
@@ -76,13 +77,15 @@ describe('functionnal tests', () => {
 
     const buttonInput = vm.$el.querySelector('button')
     expect(document.activeElement == buttonInput).to.be.true
+    vm.$destroy()
   })
 
-  it.only('Bring push button with .push modifier', () => {
+  it.only('Bring push button with .push modifier', (done) => {
     const div = document.createElement('div')
     document.body.appendChild(div)
 
-    const vm = new VM(`<div><button type="button" v-shortkey.push="['p']">BUTTON</button></div>`)
+
+    const vm = new VM(`<div><button type="button" v-shortkey.push="['p']" @shortkey="foo">BUTTON</button></div>`)
     vm.$mount(div)
 
     let spyFoo = sinon.spy(vm, 'foo')
@@ -92,7 +95,12 @@ describe('functionnal tests', () => {
     keydown.key = 'p'
     document.dispatchEvent(keydown)
 
-    expect(spyFoo).to.be.calledTwice
-    spyFoo.restore()
+    setTimeout(() => {
+      console.log('....', spyFoo.callCount)
+      expect(spyFoo).to.be.calledOnce
+      spyFoo.restore()
+      vm.destroy()
+      done()
+    }, 1000)
   })
 })
