@@ -5,6 +5,7 @@ import Shortkey from '../src/index.js'
 
 find.shim()
 
+Vue.use(Shortkey)
 const VM = pTemplate => new Vue({
   template: pTemplate,
   data() {
@@ -14,22 +15,22 @@ const VM = pTemplate => new Vue({
   },
   methods: {
     foo() {
-      console.log('called----------------------')
       this.called = true
     }
   }
 })
 
+let keydown = document.createEvent('HTMLEvents')
+keydown.initEvent("keydown", false, true)
 
 describe('functionnal tests', () => {
-  Vue.use(Shortkey)
-
   it('listen for keydown and dispatch event', () => {
-    const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
-    vm.$mount()
+    const div = document.createElement('div')
+    document.body.appendChild(div)
 
-    var keydown = document.createEvent('HTMLEvents')
-    keydown.initEvent("keydown", false, true)
+    const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
+    vm.$mount(div)
+
     keydown.ctrlKey = false
     keydown.key = 'q'
     document.dispatchEvent(keydown)
@@ -49,8 +50,6 @@ describe('functionnal tests', () => {
     textarea.focus()
     expect(document.activeElement == textarea).to.be.true
 
-    var keydown = document.createEvent('HTMLEvents')
-    keydown.initEvent("keydown", false, true)
     keydown.ctrlKey = false
     keydown.key = 'b'
     document.dispatchEvent(keydown)
@@ -70,8 +69,7 @@ describe('functionnal tests', () => {
     inputText.focus()
     expect(document.activeElement == inputText).to.be.true
 
-    let keydown = document.createEvent('HTMLEvents')
-    keydown.initEvent('keydown', false, true)
+    keydown.ctrlKey = false
     keydown.key = 'f'
     document.dispatchEvent(keydown)
 
@@ -80,12 +78,11 @@ describe('functionnal tests', () => {
     vm.$destroy()
   })
 
-  it.only('Bring push button with .push modifier', (done) => {
+  it('Bring push button with .push modifier', () => {
     const div = document.createElement('div')
     document.body.appendChild(div)
 
-
-    const vm = new VM(`<div><button type="button" v-shortkey.push="['p']" @shortkey="foo">BUTTON</button></div>`)
+    const vm = new VM(`<div><button type="button" v-shortkey.push="['p']" @shortkey="foo()">BUTTON</button></div>`)
     vm.$mount(div)
 
     let spyFoo = sinon.spy(vm, 'foo')
@@ -95,12 +92,13 @@ describe('functionnal tests', () => {
     keydown.key = 'p'
     document.dispatchEvent(keydown)
 
-    setTimeout(() => {
-      console.log('....', spyFoo.callCount)
-      expect(spyFoo).to.be.calledOnce
-      spyFoo.restore()
-      vm.destroy()
-      done()
-    }, 1000)
+    let keyup = document.createEvent('HTMLEvents')
+    keyup.initEvent('keyup', false, true)
+    keyup.key = 'p'
+    document.dispatchEvent(keyup)
+
+    expect(spyFoo.callCount).to.equal(2)
+    spyFoo.restore()
+    vm.$destroy()
   })
 })
