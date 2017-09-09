@@ -20,8 +20,11 @@ const VM = pTemplate => new Vue({
   }
 })
 
-let keydown = document.createEvent('HTMLEvents')
-keydown.initEvent("keydown", false, true)
+function createEvent(name='keydown') {
+  const event = document.createEvent('HTMLEvents')
+  event.initEvent(name, false, true)
+  return event
+}
 
 describe('functionnal tests', () => {
   it('listen for keydown and dispatch event', () => {
@@ -31,9 +34,13 @@ describe('functionnal tests', () => {
     const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
     vm.$mount(div)
 
-    keydown.ctrlKey = false
+    const keydown = createEvent('keydown')
     keydown.key = 'q'
     document.dispatchEvent(keydown)
+
+    const keyup = createEvent('keyup')
+    keyup.key = 'q'
+    document.dispatchEvent(keyup)
 
     expect(vm.called).to.be.true
     vm.$destroy()
@@ -50,9 +57,13 @@ describe('functionnal tests', () => {
     textarea.focus()
     expect(document.activeElement == textarea).to.be.true
 
-    keydown.ctrlKey = false
+    const keydown = createEvent('keydown')
     keydown.key = 'b'
     document.dispatchEvent(keydown)
+
+    const keyup = createEvent('keyup')
+    keyup.key = 'b'
+    document.dispatchEvent(keyup)
 
     expect(vm.called).to.be.false
     vm.$destroy()
@@ -69,9 +80,13 @@ describe('functionnal tests', () => {
     inputText.focus()
     expect(document.activeElement == inputText).to.be.true
 
-    keydown.ctrlKey = false
+    const keydown = createEvent('keydown')
     keydown.key = 'f'
     document.dispatchEvent(keydown)
+
+    const keyup = createEvent('keyup')
+    keyup.key = 'f'
+    document.dispatchEvent(keyup)
 
     const buttonInput = vm.$el.querySelector('button')
     expect(document.activeElement == buttonInput).to.be.true
@@ -85,15 +100,13 @@ describe('functionnal tests', () => {
     const vm = new VM(`<div><button type="button" v-shortkey.push="['p']" @shortkey="foo()">BUTTON</button></div>`)
     vm.$mount(div)
 
-    let spyFoo = sinon.spy(vm, 'foo')
+    const spyFoo = sinon.spy(vm, 'foo')
 
-    let keydown = document.createEvent('HTMLEvents')
-    keydown.initEvent('keydown', false, true)
+    const keydown = createEvent('keydown')
     keydown.key = 'p'
     document.dispatchEvent(keydown)
 
-    let keyup = document.createEvent('HTMLEvents')
-    keyup.initEvent('keyup', false, true)
+    const keyup = createEvent('keyup')
     keyup.key = 'p'
     document.dispatchEvent(keyup)
 
