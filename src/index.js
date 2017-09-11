@@ -14,7 +14,6 @@ ShortKey.install = (Vue, options) => {
       let avoid = binding.modifiers.avoid === true
       let focus = binding.modifiers.focus === true
       let once = binding.modifiers.once === true
-      if (pushButton) { delete b.push }
       if (avoid) {
         objAvoided.push(el)
       } else {
@@ -30,8 +29,6 @@ ShortKey.install = (Vue, options) => {
     unbind: (el, binding) => {
       let b = []
       b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
-      let pushButton = binding.modifiers.push === true
-      if (pushButton) { delete b.push }
       if (b) {
         let k = b.join('')
         if (mapFunctions[k].el === el) delete mapFunctions[k]
