@@ -10,7 +10,6 @@ ShortKey.install = (Vue, options) => {
     bind: (el, binding, vnode) => {
       // Mapping the commands
       let b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
-      let persistent = binding.modifiers.persistent === true
       let pushButton = binding.modifiers.push === true
       let avoid = binding.modifiers.avoid === true
       let focus = binding.modifiers.focus === true
@@ -21,7 +20,6 @@ ShortKey.install = (Vue, options) => {
       } else {
         let k = b.join('')
         mapFunctions[k] = {
-          'pr': persistent,
           'ps': pushButton,
           'oc': once,
           'fn': !focus,
