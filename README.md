@@ -66,6 +66,8 @@ The example below shows how to do this
 | Home                       | home          |
 | End                        | end           |
 | A - Z                      | a-z           |
+| 0-9                        | 0-9           |
+| F1-F12                     | f1-f12        |
 
 You can make any combination of keys as well as reserve a single key.
 ```html
