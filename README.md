@@ -45,6 +45,12 @@ The example below shows how to do this
 <tooltip v-shortkey.push="['f3']" @shortkey="toggleToolTip"></tooltip>
 ```
 
+#### Using on a component
+Use the modifier `native` to catch the event.
+```html
+ <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.native="theAction()"></my-component>
+```html
+
 #### Key list
 | Key                        | Shortkey Name |
 |----------------------------|---------------|
