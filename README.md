@@ -38,34 +38,42 @@ You can point the focus with the shortcut easily.
 ```
 
 #### Push button
-Sometimes you may need a shortcut works as a push button. In these cases, insert the "push" modifier
+Sometimes you may need a shortcut works as a push button. It calls the function one time until you release the shortcut. When you release the shortcut, it call the same function again like a toggle. In these cases, insert the "push" modifier.
 
 The example below shows how to do this
 ```html
 <tooltip v-shortkey.push="['f3']" @shortkey="toggleToolTip"></tooltip>
 ```
 
+#### Using on a component
+Use the modifier `native` to catch the event.
+```html
+ <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.native="theAction()"></my-component>
+```html
+
 #### Key list
-| Key         | Shortkey Name |
-|-------------|---------------|
-| Shift       | shift         |
-| Control     | ctrl          |
-| Alt         | alt           |
-| Alt Graph   | altgraph      |
-| Super (Windows or Mac Cmd)   | meta      |
-| Arrow Up    | arrowup       |
-| Arrow Down  | arrowdown     |
-| Arrow Left  | arrowleft     |
-| Arrow Right | arrowright    |
-| Enter       | enter         |
-| Escape      | esc           |
-| Tab         | tab           |
-| Space       | space         |
-| Page Up     | pageup        |
-| Page Down   | pagedown      |
-| Home        | home          |
-| End         | end           |
-| A - Z       | a-z           |
+| Key                        | Shortkey Name |
+|----------------------------|---------------|
+| Shift                      | shift         |
+| Control                    | ctrl          |
+| Alt                        | alt           |
+| Alt Graph                  | altgraph      |
+| Super (Windows or Mac Cmd) | meta          |
+| Arrow Up                   | arrowup       |
+| Arrow Down                 | arrowdown     |
+| Arrow Left                 | arrowleft     |
+| Arrow Right                | arrowright    |
+| Enter                      | enter         |
+| Escape                     | esc           |
+| Tab                        | tab           |
+| Space                      | space         |
+| Page Up                    | pageup        |
+| Page Down                  | pagedown      |
+| Home                       | home          |
+| End                        | end           |
+| A - Z                      | a-z           |
+| 0-9                        | 0-9           |
+| F1-F12                     | f1-f12        |
 
 You can make any combination of keys as well as reserve a single key.
 ```html
