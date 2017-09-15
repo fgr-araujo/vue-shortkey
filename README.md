@@ -49,7 +49,7 @@ The example below shows how to do this
 Use the modifier `native` to catch the event.
 ```html
  <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.native="theAction()"></my-component>
-```html
+```
 
 #### Key list
 | Key                        | Shortkey Name |
