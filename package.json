@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "NODE_ENV=production node build/build.js",
-    "test": "NODE_ENV=test mocha test/index.test.js --compilers js:babel-register && karma start test/karma.conf.js --single-run",
+    "test": "karma start test/karma.conf.js --single-run",
     "coverage": "nyc mocha test/**/*.js"
   },
   "repository": {
