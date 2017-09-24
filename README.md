@@ -30,6 +30,24 @@ The function in the modifier __@shortkey__ will be called repeatedly while the k
 <button v-shortkey.once="['ctrl', 'alt', 'o']" @shortkey="theAction()">Open</button>
 ```
 
+
+#### Multi keys
+```html
+<button v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" @shortkey="theAction">Joystick</button>
+```
+... and your method will be called with the key in the  parameter
+```javascript
+methods: {
+  theAction (event) {
+    switch (event.srcKey) {
+      case 'up':
+        ...
+        break
+      case 'down':
+        ...
+        break
+```
+
 #### Setting the focus
 You can point the focus with the shortcut easily.
 <sub>The code below reserves the ALT + I key to set the focus to the input element.</sub>
