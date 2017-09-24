@@ -27,7 +27,8 @@ function createEvent(name='keydown') {
 }
 
 describe('functionnal tests', () => {
-  it('listen for keydown and dispatch event', () => {
+  describe('Dispatch triggered event', () => {
+    it('listen for keydown and dispatch simple event', () => {
     const div = document.createElement('div')
     document.body.appendChild(div)
 
@@ -46,27 +47,76 @@ describe('functionnal tests', () => {
     vm.$destroy()
   })
 
-  it('dont trigger listen for keydown and dispatch event', () => {
-    const div = document.createElement('div')
-    document.body.appendChild(div)
+    it('listen for keydown and dispatch event with object key', (done) => {
+      const div = document.createElement('div')
+      document.body.appendChild(div)
+      const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
 
-    const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea v-shortkey.avoid></textarea></div>')
-    vm.$mount(div)
+      const stubFoo = sinon.stub(vm, 'foo').callsFake(fn => {
+        expect(fn.srcKey).to.equal('option1')
+        stubFoo.restore()
+        vm.$destroy()
+        done()
+      })
 
-    const textarea = vm.$el.querySelector('textarea')
-    textarea.focus()
-    expect(document.activeElement == textarea).to.be.true
+      vm.$mount(div)
 
-    const keydown = createEvent('keydown')
-    keydown.key = 'b'
-    document.dispatchEvent(keydown)
+      const keydown = createEvent('keydown')
+      keydown.key = 'q'
+      document.dispatchEvent(keydown)
 
-    const keyup = createEvent('keyup')
-    keyup.key = 'b'
-    document.dispatchEvent(keyup)
+      const keyup = createEvent('keyup')
+      keyup.key = 'q'
+      document.dispatchEvent(keyup)
+    })
+  })
 
-    expect(vm.called).to.be.false
-    vm.$destroy()
+
+  describe('Don`t dispatch triggered event', () => {
+    it('dont trigger listen for keydown and dispatch event', () => {
+      const div = document.createElement('div')
+      document.body.appendChild(div)
+
+      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea v-shortkey.avoid></textarea></div>')
+      vm.$mount(div)
+
+      const textarea = vm.$el.querySelector('textarea')
+      textarea.focus()
+      expect(document.activeElement == textarea).to.be.true
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'b'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'b'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.false
+      vm.$destroy()
+    })
+
+    it('listen for keydown and dispatch event with object key', () => {
+      const div = document.createElement('div')
+      document.body.appendChild(div)
+      const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"><textarea v-shortkey.avoid></textarea></div>')
+      vm.$mount(div)
+
+      const textarea = vm.$el.querySelector('textarea')
+      textarea.focus()
+      expect(document.activeElement == textarea).to.be.true
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'q'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'q'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.false
+      vm.$destroy()
+    })
   })
 
   it('Setting focus with .focus modifier', () => {
@@ -114,4 +164,5 @@ describe('functionnal tests', () => {
     spyFoo.restore()
     vm.$destroy()
   })
+
 })
