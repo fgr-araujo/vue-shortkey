@@ -17,21 +17,20 @@ ShortKey.install = (Vue, options) => {
       if (avoid) {
         objAvoided.push(el)
       } else {
-        let k = b.join('')
-        mapFunctions[k] = {
-          'ps': pushButton,
-          'oc': once,
-          'fn': !focus,
-          'el': vnode.elm
-        }
+        mappingFunctions({b, pushButton, once, focus, el: vnode.elm})
       }
     },
     unbind: (el, binding) => {
       let b = []
       b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
-      if (b) {
-        let k = b.join('')
+      if (b instanceof Array) {
+        const k = b.join('')
         if (mapFunctions[k].el === el) delete mapFunctions[k]
+      } else {
+        for (let item in b) {
+          const k = b[item].join('')
+          if (mapFunctions[k].el === el) delete mapFunctions[k]
+        }
       }
 
       objAvoided = objAvoided.filter((itm) => {
@@ -65,15 +64,17 @@ ShortKey.decodeKey = (pKey) => {
 }
 
 ShortKey.keyDown = (pKey) => {
-  if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps)|| (mapFunctions[pKey].ps && !keyPressed)) {
+  if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps) || (mapFunctions[pKey].ps && !keyPressed)) {
     const e = document.createEvent('HTMLEvents')
     e.initEvent('shortkey', true, true)
+    if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
     mapFunctions[pKey].el.dispatchEvent(e)
   }
 }
 ShortKey.keyUp = (pKey) => {
   const e = document.createEvent('HTMLEvents')
   e.initEvent('shortkey', true, true)
+  if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
   mapFunctions[pKey].el.dispatchEvent(e)
 }
 
@@ -110,6 +111,29 @@ if (process.env.NODE_ENV !== 'test') {
   })()
 }
 
+const mappingFunctions = ({b, pushButton, once, focus, el}) => {
+  if (b instanceof Array) {
+    const k = b.join('')
+    mapFunctions[k] = {
+      'ps': pushButton,
+      'oc': once,
+      'fn': !focus,
+      el
+    }
+  } else {
+    for (let item in b) {
+      const k = b[item].join('')
+      mapFunctions[k] = {
+        'ps': pushButton,
+        'oc': once,
+        'fn': !focus,
+        el,
+        'key': item
+      }
+    }
+  }
+}
+
 const filteringElement = (pKey) => {
   const decodedKey = ShortKey.decodeKey(pKey)
   const objectAvoid = objAvoided.find(r => r === document.activeElement)
@@ -138,8 +162,6 @@ const checkElementType = () => {
 
   return {avoidedTypes: elmTypeAvoid, avoidedClasses: elmClassAvoid}
 }
-
-// export default ShortKey
 
 if (typeof module != 'undefined' && module.exports) {
   module.exports = ShortKey;
