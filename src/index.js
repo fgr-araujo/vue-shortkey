@@ -17,7 +17,9 @@ ShortKey.install = (Vue, options) => {
       if (avoid) {
         objAvoided.push(el)
       } else {
-        mappingFunctions({b, pushButton, once, focus, el: vnode.elm})
+        if ({b, pushButton, once, focus, el: vnode.elm}) {
+          mappingFunctions({b, pushButton, once, focus, el: vnode.elm})
+        }
       }
     },
     unbind: (el, binding) => {
