@@ -59,6 +59,7 @@ ShortKey.decodeKey = (pKey) => {
   if (pKey.key === 'PageDown') { k += 'pagedown' }
   if (pKey.key === 'Home') { k += 'home' }
   if (pKey.key === 'End') { k += 'end' }
+  if (pKey.key === 'Delete') { k += 'del' }
   if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
   return k
 }

@@ -46,6 +46,7 @@ describe('Index.js', () => {
       expect(Shortkey.decodeKey({key: 'PageDown'})).to.equal('pagedown')
       expect(Shortkey.decodeKey({key: 'Home'})).to.equal('home')
       expect(Shortkey.decodeKey({key: 'End'})).to.equal('end')
+      expect(Shortkey.decodeKey({key: 'Delete'})).to.equal('del')
     })
 
     it('Return a combined key', () => {
@@ -195,4 +196,22 @@ describe('functionnal tests', () => {
     vm.$destroy()
   })
 
+  it('Testing delete key', () => {
+    const div = document.createElement('div')
+    document.body.appendChild(div)
+
+    const vm = new VM(`<button @shortkey="foo" v-shortkey="['del']"></button>`)
+    vm.$mount(div)
+
+    const keydown = createEvent('keydown')
+    keydown.key = 'Delete'
+    document.dispatchEvent(keydown)
+
+    const keyup = createEvent('keyup')
+    keyup.key = 'Delete'
+    document.dispatchEvent(keyup)
+
+    expect(vm.called).to.be.true
+    vm.$destroy()
+  })
 })
