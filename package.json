@@ -1,7 +1,7 @@
 {
   "name": "vue-shortkey",
   "description": "A plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.",
-  "version": "3.0.2",
+  "version": "3.0.4",
   "author": "iFgR <ifgr.fagner@gmail.com>",
   "main": "dist/index.js",
   "license": "MIT",

@@ -130,7 +130,7 @@ Vue.use('vue-shortkey', { prevent: ['.my-class-name', 'textarea.class-of-textare
 #### Other uses
 With the dynamism offered by Vue, you can easily create shortcuts dynamically
 ```html
-<li v-for="(ctx, item) in itens">
+<li v-for="(ctx, item) in items">
   <a
     href="https://vuejs.org"
     target="_blank"
