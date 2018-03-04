@@ -72,6 +72,15 @@ Use the modifier `native` to catch the event.
 #### Key list
 | Key                        | Shortkey Name |
 |----------------------------|---------------|
+| Delete                     | del           |
+| Insert                     | insert        |
+| NumLock                    | numlock       |
+| CapsLock                   | capslock      |
+| Pause                      | pause         |
+| ContextMenu                | contextmenu   |
+| ScrollLock                 | scrolllock    |
+| BrowserHome                | browserhome   |
+| MediaSelect                | mediaselect   |
 | Shift                      | shift         |
 | Control                    | ctrl          |
 | Alt                        | alt           |

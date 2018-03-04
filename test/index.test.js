@@ -47,6 +47,14 @@ describe('Index.js', () => {
       expect(Shortkey.decodeKey({key: 'Home'})).to.equal('home')
       expect(Shortkey.decodeKey({key: 'End'})).to.equal('end')
       expect(Shortkey.decodeKey({key: 'Delete'})).to.equal('del')
+      expect(Shortkey.decodeKey({key: 'Insert'})).to.equal('insert')
+      expect(Shortkey.decodeKey({key: 'NumLock'})).to.equal('numlock')
+      expect(Shortkey.decodeKey({key: 'CapsLock'})).to.equal('capslock')
+      expect(Shortkey.decodeKey({key: 'Pause'})).to.equal('pause')
+      expect(Shortkey.decodeKey({key: 'ContextMenu'})).to.equal('contextmenu')
+      expect(Shortkey.decodeKey({key: 'ScrollLock'})).to.equal('scrolllock')
+      expect(Shortkey.decodeKey({key: 'BrowserHome'})).to.equal('browserhome')
+      expect(Shortkey.decodeKey({key: 'MediaSelect'})).to.equal('mediaselect')
     })
 
     it('Return a combined key', () => {
