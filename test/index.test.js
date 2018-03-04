@@ -222,4 +222,25 @@ describe('functionnal tests', () => {
     expect(vm.called).to.be.true
     vm.$destroy()
   })
+
+  it('Testing ? key', () => {
+    const div = document.createElement('div')
+    document.body.appendChild(div)
+
+    const vm = new VM(`<button @shortkey="foo" v-shortkey="['shift', '?']"></button>`)
+    vm.$mount(div)
+
+    const keydown = createEvent('keydown')
+    keydown.shiftKey = true
+    keydown.key = '?'
+    document.dispatchEvent(keydown)
+
+    const keyup = createEvent('keyup')
+    keydown.shiftKey = true
+    keydown.key = '?'
+    document.dispatchEvent(keyup)
+
+    expect(vm.called).to.be.true
+    vm.$destroy()
+  })
 })

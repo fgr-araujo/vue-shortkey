@@ -68,7 +68,7 @@ ShortKey.decodeKey = (pKey) => {
   if (pKey.key === 'ScrollLock') { k += 'scrolllock' }
   if (pKey.key === 'BrowserHome') { k += 'browserhome' }
   if (pKey.key === 'MediaSelect') { k += 'mediaselect' }
-  if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
+  if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}|\//g.test(pKey.key)) k += pKey.key.toLowerCase()
   return k
 }
 
