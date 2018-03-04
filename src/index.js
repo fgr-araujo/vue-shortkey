@@ -60,6 +60,14 @@ ShortKey.decodeKey = (pKey) => {
   if (pKey.key === 'Home') { k += 'home' }
   if (pKey.key === 'End') { k += 'end' }
   if (pKey.key === 'Delete') { k += 'del' }
+  if (pKey.key === 'Insert') { k += 'insert' }
+  if (pKey.key === 'NumLock') { k += 'numlock' }
+  if (pKey.key === 'CapsLock') { k += 'capslock' }
+  if (pKey.key === 'Pause') { k += 'pause' }
+  if (pKey.key === 'ContextMenu') { k += 'contextmenu' }
+  if (pKey.key === 'ScrollLock') { k += 'scrolllock' }
+  if (pKey.key === 'BrowserHome') { k += 'browserhome' }
+  if (pKey.key === 'MediaSelect') { k += 'mediaselect' }
   if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}/g.test(pKey.key)) k += pKey.key.toLowerCase()
   return k
 }
