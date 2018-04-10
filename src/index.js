@@ -74,15 +74,13 @@ ShortKey.decodeKey = (pKey) => {
 
 ShortKey.keyDown = (pKey) => {
   if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps) || (mapFunctions[pKey].ps && !keyPressed)) {
-    const e = document.createEvent('HTMLEvents')
-    e.initEvent('shortkey', true, true)
+    const e = new Event('shortkey', { bubbles: false })
     if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
     mapFunctions[pKey].el.dispatchEvent(e)
   }
 }
 ShortKey.keyUp = (pKey) => {
-  const e = document.createEvent('HTMLEvents')
-  e.initEvent('shortkey', true, true)
+  const e = new Event('shortkey', { bubbles: false })
   if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
   mapFunctions[pKey].el.dispatchEvent(e)
 }

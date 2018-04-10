@@ -10,12 +10,16 @@ const VM = pTemplate => new Vue({
   template: pTemplate,
   data() {
     return {
-      called: false
+      called: false,
+      calledBubble: false
     }
   },
   methods: {
     foo() {
       this.called = true
+    },
+    bar() {
+      this.calledBubble = true
     }
   }
 })
@@ -241,6 +245,23 @@ describe('functionnal tests', () => {
     document.dispatchEvent(keyup)
 
     expect(vm.called).to.be.true
+    vm.$destroy()
+  })
+
+  it('Prevent bubble event', () => {
+    const div = document.createElement('div')
+    document.body.appendChild(div)
+    const vm = new VM('<div @shortkey="bar" v-shortkey="[\'a\']"><button type="button" @shortkey="foo" v-shortkey="[\'b\']">TEST</button></div>')
+
+    vm.$mount(div)
+
+    const textarea = vm.$el.querySelector('button')
+    const keydown = createEvent('keydown')
+    keydown.key = 'b'
+    document.dispatchEvent(keydown)
+
+    expect(vm.called).to.be.true
+    expect(vm.calledBubble).to.be.false
     vm.$destroy()
   })
 })
