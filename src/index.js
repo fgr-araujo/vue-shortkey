@@ -164,8 +164,8 @@ const filteringElement = (pKey) => {
   const elementSeparate = checkElementType()
   const elementTypeAvoid = elementSeparate.avoidedTypes
   const elementClassAvoid = elementSeparate.avoidedClasses
-  const filterTypeAvoid = elementTypeAvoid.find(r => r === document.activeElement && document.activeElement.tagName.toLowerCase())
-  const filterClassAvoid = elementClassAvoid.find(r => r === '.' + document.activeElement && document.activeElement.className.toLowerCase())
+  const filterTypeAvoid = elementTypeAvoid.find(r => document.activeElement && r === document.activeElement.tagName.toLowerCase())
+  const filterClassAvoid = elementClassAvoid.find(r => document.activeElement && r === '.' + document.activeElement.className.toLowerCase())
   return !objectAvoid && mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid
 }
 
