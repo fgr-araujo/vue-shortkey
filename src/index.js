@@ -133,29 +133,26 @@ if (process.env.NODE_ENV !== 'test') {
   })()
 }
 
+const addToMappingFunctions = (k, {pushButton, once, focus, el}, item) => {
+  const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
+  elm.push(el)
+  mapFunctions[k] = {
+    'ps': pushButton,
+    'oc': once,
+    'fn': !focus,
+    'key': item,
+    el: elm
+  }
+}
+
 const mappingFunctions = ({b, pushButton, once, focus, el}) => {
   if (b instanceof Array) {
     const k = b.join('')
-    const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
-    elm.push(el)
-    mapFunctions[k] = {
-      'ps': pushButton,
-      'oc': once,
-      'fn': !focus,
-      el: elm
-    }
+    addToMappingFunctions(k, {pushButton, once, focus, el})
   } else {
     for (let item in b) {
       const k = b[item].join('')
-      const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
-      elm.push(el)
-      mapFunctions[k] = {
-        'ps': pushButton,
-        'oc': once,
-        'fn': !focus,
-        'key': item,
-        el: elm
-      }
+      addToMappingFunctions(k, {pushButton, once, focus, el}, item)
     }
   }
 }
