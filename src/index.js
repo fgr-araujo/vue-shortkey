@@ -4,16 +4,20 @@ let objAvoided = []
 let elementAvoided = []
 let keyPressed = false
 
+const parseValue = (binding) => {
+  return typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
+}
+
 ShortKey.install = (Vue, options) => {
   elementAvoided = [...(options && options.prevent ? options.prevent : [])]
   Vue.directive('shortkey', {
     bind: (el, binding, vnode) => {
       // Mapping the commands
-      let b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
-      let pushButton = binding.modifiers.push === true
-      let avoid = binding.modifiers.avoid === true
-      let focus = binding.modifiers.focus === true
-      let once = binding.modifiers.once === true
+      const b = parseValue(binding)
+      const pushButton = binding.modifiers.push === true
+      const avoid = binding.modifiers.avoid === true
+      const focus = binding.modifiers.focus === true
+      const once = binding.modifiers.once === true
       if (avoid) {
         objAvoided.push(el)
       } else {
@@ -21,8 +25,7 @@ ShortKey.install = (Vue, options) => {
       }
     },
     unbind: (el, binding) => {
-      let b = []
-      b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
+      const b = parseValue(binding)
       if (b instanceof Array) {
         const k = b.join('')
         const idxElm = mapFunctions[k].el.indexOf(el)
