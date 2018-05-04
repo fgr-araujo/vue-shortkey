@@ -84,19 +84,17 @@ ShortKey.decodeKey = (pKey) => {
   return k
 }
 
-ShortKey.keyDown = (pKey) => {
-  if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps) || (mapFunctions[pKey].ps && !keyPressed)) {
-    const e = new Event('shortkey', { bubbles: false })
-    if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
-    const elm = mapFunctions[pKey].el
-    elm[elm.length - 1].dispatchEvent(e)
-  }
-}
-ShortKey.keyUp = (pKey) => {
+const dispatchShortkeyEvent = (pKey) => {
   const e = new Event('shortkey', { bubbles: false })
   if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
   const elm = mapFunctions[pKey].el
   elm[elm.length - 1].dispatchEvent(e)
+}
+
+ShortKey.keyDown = (pKey) => {
+  if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps) || (mapFunctions[pKey].ps && !keyPressed)) {
+    dispatchShortkeyEvent(pKey)
+  }
 }
 
 if (process.env.NODE_ENV !== 'test') {
@@ -125,7 +123,7 @@ if (process.env.NODE_ENV !== 'test') {
         pKey.preventDefault()
         pKey.stopPropagation()
         if (mapFunctions[decodedKey].oc || mapFunctions[decodedKey].ps) {
-          ShortKey.keyUp(decodedKey)
+          dispatchShortkeyEvent(decodedKey);
         }
       }
       keyPressed = false
