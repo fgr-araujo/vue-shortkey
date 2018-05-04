@@ -23,14 +23,14 @@ ShortKey.install = (Vue, options) => {
     bind: (el, binding, vnode) => {
       // Mapping the commands
       const b = parseValue(binding)
-      const pushButton = binding.modifiers.push === true
+      const push = binding.modifiers.push === true
       const avoid = binding.modifiers.avoid === true
-      const focus = binding.modifiers.focus === true
+      const focus = !binding.modifiers.focus === true
       const once = binding.modifiers.once === true
       if (avoid) {
         objAvoided.push(el)
       } else {
-        mappingFunctions({b, pushButton, once, focus, el: vnode.elm})
+        mappingFunctions({b, push, once, focus, el: vnode.elm})
       }
     },
     unbind: (el, binding) => {
@@ -92,7 +92,7 @@ const dispatchShortkeyEvent = (pKey) => {
 }
 
 ShortKey.keyDown = (pKey) => {
-  if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps) || (mapFunctions[pKey].ps && !keyPressed)) {
+  if ((!mapFunctions[pKey].once && !mapFunctions[pKey].push) || (mapFunctions[pKey].push && !keyPressed)) {
     dispatchShortkeyEvent(pKey)
   }
 }
@@ -106,7 +106,7 @@ if (process.env.NODE_ENV !== 'test') {
       if (filteringElement(pKey)) {
         pKey.preventDefault()
         pKey.stopPropagation()
-        if (mapFunctions[decodedKey].fn) {
+        if (mapFunctions[decodedKey].focus) {
           ShortKey.keyDown(decodedKey)
           keyPressed = true
         } else if (!keyPressed) {
@@ -122,7 +122,7 @@ if (process.env.NODE_ENV !== 'test') {
       if (filteringElement(pKey)) {
         pKey.preventDefault()
         pKey.stopPropagation()
-        if (mapFunctions[decodedKey].oc || mapFunctions[decodedKey].ps) {
+        if (mapFunctions[decodedKey].once || mapFunctions[decodedKey].push) {
           dispatchShortkeyEvent(decodedKey);
         }
       }
@@ -131,26 +131,26 @@ if (process.env.NODE_ENV !== 'test') {
   })()
 }
 
-const addToMappingFunctions = (k, {pushButton, once, focus, el}, item) => {
+const addToMappingFunctions = (k, {push, once, focus, el}, key) => {
   const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
   elm.push(el)
   mapFunctions[k] = {
-    'ps': pushButton,
-    'oc': once,
-    'fn': !focus,
-    'key': item,
+    push,
+    once,
+    focus,
+    key,
     el: elm
   }
 }
 
-const mappingFunctions = ({b, pushButton, once, focus, el}) => {
+const mappingFunctions = ({b, push, once, focus, el}) => {
   if (b instanceof Array) {
     const k = b.join('')
-    addToMappingFunctions(k, {pushButton, once, focus, el})
+    addToMappingFunctions(k, {push, once, focus, el})
   } else {
     for (let item in b) {
       const k = b[item].join('')
-      addToMappingFunctions(k, {pushButton, once, focus, el}, item)
+      addToMappingFunctions(k, {push, once, focus, el}, item)
     }
   }
 }
