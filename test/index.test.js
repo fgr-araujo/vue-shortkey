@@ -95,6 +95,24 @@ describe('functionnal tests', () => {
       vm.$destroy()
     })
 
+    it('unbind simple events', () => {
+      const div = createDiv()
+      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
+      vm.$mount(div)
+
+      vm.$destroy()
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'q'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'q'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.false
+    });
+
     it('listen for keydown and dispatch event with object key', (done) => {
       const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
@@ -115,6 +133,26 @@ describe('functionnal tests', () => {
       const keyup = createEvent('keyup')
       keyup.key = 'q'
       document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.true
+    })
+
+    it('unbind event with object key', () => {
+      const div = createDiv()
+      const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
+
+      vm.$mount(div)
+      vm.$destroy()
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'q'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'q'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.false
     })
   })
 

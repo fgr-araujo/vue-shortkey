@@ -8,6 +8,15 @@ const parseValue = (binding) => {
   return typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
 }
 
+const unbindValue = (el, k) => {
+  const idxElm = mapFunctions[k].el.indexOf(el)
+  if (mapFunctions[k].el.length > 1 && idxElm > -1) {
+    mapFunctions[k].el.splice(idxElm, 1)
+  } else {
+    delete mapFunctions[k]
+  }
+}
+
 ShortKey.install = (Vue, options) => {
   elementAvoided = [...(options && options.prevent ? options.prevent : [])]
   Vue.directive('shortkey', {
@@ -28,21 +37,11 @@ ShortKey.install = (Vue, options) => {
       const b = parseValue(binding)
       if (b instanceof Array) {
         const k = b.join('')
-        const idxElm = mapFunctions[k].el.indexOf(el)
-        if (mapFunctions[k].el.length > 1 && idxElm > -1) {
-          mapFunctions[k].el.splice(idxElm, 1)
-        } else {
-          delete mapFunctions[k]
-        }
+        unbindValue(el, k)
       } else {
         for (let item in b) {
           const k = b[item].join('')
-          const idxElm = mapFunctions[k].el.indexOf(el)
-          if (mapFunctions[k].el.length > 1 && idxElm > -1) {
-            mapFunctions[k].el.splice(idxElm, 1)
-          } else {
-            delete mapFunctions[k]
-          }
+          unbindValue(el, k)
         }
       }
 
