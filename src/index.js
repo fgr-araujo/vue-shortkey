@@ -5,16 +5,11 @@ let elementAvoided = []
 let keyPressed = false
 
 const parseValue = (binding) => {
-  return typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
-}
-
-const unbindValue = (el, k) => {
-  const idxElm = mapFunctions[k].el.indexOf(el)
-  if (mapFunctions[k].el.length > 1 && idxElm > -1) {
-    mapFunctions[k].el.splice(idxElm, 1)
-  } else {
-    delete mapFunctions[k]
+  const value = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
+  if (value instanceof Array) {
+    return {'': value};
   }
+  return value
 }
 
 ShortKey.install = (Vue, options) => {
@@ -35,13 +30,13 @@ ShortKey.install = (Vue, options) => {
     },
     unbind: (el, binding) => {
       const b = parseValue(binding)
-      if (b instanceof Array) {
-        const k = b.join('')
-        unbindValue(el, k)
-      } else {
-        for (let item in b) {
-          const k = b[item].join('')
-          unbindValue(el, k)
+      for (let item in b) {
+        const k = b[item].join('')
+        const idxElm = mapFunctions[k].el.indexOf(el)
+        if (mapFunctions[k].el.length > 1 && idxElm > -1) {
+          mapFunctions[k].el.splice(idxElm, 1)
+        } else {
+          delete mapFunctions[k]
         }
       }
 
@@ -131,26 +126,17 @@ if (process.env.NODE_ENV !== 'test') {
   })()
 }
 
-const addToMappingFunctions = (k, {push, once, focus, el}, key) => {
-  const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
-  elm.push(el)
-  mapFunctions[k] = {
-    push,
-    once,
-    focus,
-    key,
-    el: elm
-  }
-}
-
 const mappingFunctions = ({b, push, once, focus, el}) => {
-  if (b instanceof Array) {
-    const k = b.join('')
-    addToMappingFunctions(k, {push, once, focus, el})
-  } else {
-    for (let item in b) {
-      const k = b[item].join('')
-      addToMappingFunctions(k, {push, once, focus, el}, item)
+  for (let key in b) {
+    const k = b[key].join('')
+    const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
+    elm.push(el)
+    mapFunctions[k] = {
+      push,
+      once,
+      focus,
+      key,
+      el: elm
     }
   }
 }
