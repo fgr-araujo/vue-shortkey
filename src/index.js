@@ -4,42 +4,39 @@ let objAvoided = []
 let elementAvoided = []
 let keyPressed = false
 
+const parseValue = (binding) => {
+  const value = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
+  if (value instanceof Array) {
+    return {'': value};
+  }
+  return value
+}
+
 ShortKey.install = (Vue, options) => {
   elementAvoided = [...(options && options.prevent ? options.prevent : [])]
   Vue.directive('shortkey', {
     bind: (el, binding, vnode) => {
       // Mapping the commands
-      let b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
-      let pushButton = binding.modifiers.push === true
-      let avoid = binding.modifiers.avoid === true
-      let focus = binding.modifiers.focus === true
-      let once = binding.modifiers.once === true
+      const b = parseValue(binding)
+      const push = binding.modifiers.push === true
+      const avoid = binding.modifiers.avoid === true
+      const focus = !binding.modifiers.focus === true
+      const once = binding.modifiers.once === true
       if (avoid) {
         objAvoided.push(el)
       } else {
-        mappingFunctions({b, pushButton, once, focus, el: vnode.elm})
+        mappingFunctions({b, push, once, focus, el: vnode.elm})
       }
     },
     unbind: (el, binding) => {
-      let b = []
-      b = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
-      if (b instanceof Array) {
-        const k = b.join('')
+      const b = parseValue(binding)
+      for (let item in b) {
+        const k = b[item].join('')
         const idxElm = mapFunctions[k].el.indexOf(el)
         if (mapFunctions[k].el.length > 1 && idxElm > -1) {
           mapFunctions[k].el.splice(idxElm, 1)
         } else {
           delete mapFunctions[k]
-        }
-      } else {
-        for (let item in b) {
-          const k = b[item].join('')
-          const idxElm = mapFunctions[k].el.indexOf(el)
-          if (mapFunctions[k].el.length > 1 && idxElm > -1) {
-            mapFunctions[k].el.splice(idxElm, 1)
-          } else {
-            delete mapFunctions[k]
-          }
         }
       }
 
@@ -82,19 +79,17 @@ ShortKey.decodeKey = (pKey) => {
   return k
 }
 
-ShortKey.keyDown = (pKey) => {
-  if ((!mapFunctions[pKey].oc && !mapFunctions[pKey].ps) || (mapFunctions[pKey].ps && !keyPressed)) {
-    const e = new Event('shortkey', { bubbles: false })
-    if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
-    const elm = mapFunctions[pKey].el
-    elm[elm.length - 1].dispatchEvent(e)
-  }
-}
-ShortKey.keyUp = (pKey) => {
+const dispatchShortkeyEvent = (pKey) => {
   const e = new Event('shortkey', { bubbles: false })
   if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
   const elm = mapFunctions[pKey].el
   elm[elm.length - 1].dispatchEvent(e)
+}
+
+ShortKey.keyDown = (pKey) => {
+  if ((!mapFunctions[pKey].once && !mapFunctions[pKey].push) || (mapFunctions[pKey].push && !keyPressed)) {
+    dispatchShortkeyEvent(pKey)
+  }
 }
 
 if (process.env.NODE_ENV !== 'test') {
@@ -106,7 +101,7 @@ if (process.env.NODE_ENV !== 'test') {
       if (filteringElement(pKey)) {
         pKey.preventDefault()
         pKey.stopPropagation()
-        if (mapFunctions[decodedKey].fn) {
+        if (mapFunctions[decodedKey].focus) {
           ShortKey.keyDown(decodedKey)
           keyPressed = true
         } else if (!keyPressed) {
@@ -122,8 +117,8 @@ if (process.env.NODE_ENV !== 'test') {
       if (filteringElement(pKey)) {
         pKey.preventDefault()
         pKey.stopPropagation()
-        if (mapFunctions[decodedKey].oc || mapFunctions[decodedKey].ps) {
-          ShortKey.keyUp(decodedKey)
+        if (mapFunctions[decodedKey].once || mapFunctions[decodedKey].push) {
+          dispatchShortkeyEvent(decodedKey);
         }
       }
       keyPressed = false
@@ -131,29 +126,17 @@ if (process.env.NODE_ENV !== 'test') {
   })()
 }
 
-const mappingFunctions = ({b, pushButton, once, focus, el}) => {
-  if (b instanceof Array) {
-    const k = b.join('')
+const mappingFunctions = ({b, push, once, focus, el}) => {
+  for (let key in b) {
+    const k = b[key].join('')
     const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
     elm.push(el)
     mapFunctions[k] = {
-      'ps': pushButton,
-      'oc': once,
-      'fn': !focus,
+      push,
+      once,
+      focus,
+      key,
       el: elm
-    }
-  } else {
-    for (let item in b) {
-      const k = b[item].join('')
-      const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
-      elm.push(el)
-      mapFunctions[k] = {
-        'ps': pushButton,
-        'oc': once,
-        'fn': !focus,
-        'key': item,
-        el: elm
-      }
     }
   }
 }

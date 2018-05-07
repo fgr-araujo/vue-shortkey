@@ -70,11 +70,16 @@ describe('Index.js', () => {
 
 
 describe('functionnal tests', () => {
+
+  const createDiv = () => {
+    const div = document.createElement('div')
+    document.body.appendChild(div)
+    return div
+  }
+
   describe('Dispatch triggered event', () => {
     it('listen for keydown and dispatch simple event', () => {
-      const div = document.createElement('div')
-      document.body.appendChild(div)
-
+      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
       vm.$mount(div)
 
@@ -90,9 +95,26 @@ describe('functionnal tests', () => {
       vm.$destroy()
     })
 
+    it('unbind simple events', () => {
+      const div = createDiv()
+      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
+      vm.$mount(div)
+
+      vm.$destroy()
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'q'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'q'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.false
+    });
+
     it('listen for keydown and dispatch event with object key', (done) => {
-      const div = document.createElement('div')
-      document.body.appendChild(div)
+      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
 
       const stubFoo = sinon.stub(vm, 'foo').callsFake(fn => {
@@ -111,14 +133,33 @@ describe('functionnal tests', () => {
       const keyup = createEvent('keyup')
       keyup.key = 'q'
       document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.true
+    })
+
+    it('unbind event with object key', () => {
+      const div = createDiv()
+      const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
+
+      vm.$mount(div)
+      vm.$destroy()
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'q'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'q'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.false
     })
   })
 
 
   describe('Don`t dispatch triggered event', () => {
     it('dont trigger listen for keydown and dispatch event', () => {
-      const div = document.createElement('div')
-      document.body.appendChild(div)
+      const div = createDiv()
 
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea v-shortkey.avoid></textarea></div>')
       vm.$mount(div)
@@ -140,8 +181,7 @@ describe('functionnal tests', () => {
     })
 
     it('listen for keydown and dispatch event with object key', () => {
-      const div = document.createElement('div')
-      document.body.appendChild(div)
+      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"><textarea v-shortkey.avoid></textarea></div>')
       vm.$mount(div)
 
@@ -163,8 +203,7 @@ describe('functionnal tests', () => {
   })
 
   it('Setting focus with .focus modifier', () => {
-    const div = document.createElement('div')
-    document.body.appendChild(div)
+    const div = createDiv()
 
     const vm = new VM(`<div><input type="text" /> <button type="button" v-shortkey.focus="['f']">BUTTON</button></div>`)
     vm.$mount(div)
@@ -187,8 +226,7 @@ describe('functionnal tests', () => {
   })
 
   it('Bring push button with .push modifier', () => {
-    const div = document.createElement('div')
-    document.body.appendChild(div)
+    const div = createDiv()
 
     const vm = new VM(`<div><button type="button" v-shortkey.push="['p']" @shortkey="foo()">BUTTON</button></div>`)
     vm.$mount(div)
@@ -209,8 +247,7 @@ describe('functionnal tests', () => {
   })
 
   it('Testing delete key', () => {
-    const div = document.createElement('div')
-    document.body.appendChild(div)
+    const div = createDiv()
 
     const vm = new VM(`<button @shortkey="foo" v-shortkey="['del']"></button>`)
     vm.$mount(div)
@@ -228,8 +265,7 @@ describe('functionnal tests', () => {
   })
 
   it('Testing ? key', () => {
-    const div = document.createElement('div')
-    document.body.appendChild(div)
+    const div = createDiv()
 
     const vm = new VM(`<button @shortkey="foo" v-shortkey="['shift', '?']"></button>`)
     vm.$mount(div)
@@ -249,8 +285,7 @@ describe('functionnal tests', () => {
   })
 
   it('Prevent bubble event', () => {
-    const div = document.createElement('div')
-    document.body.appendChild(div)
+    const div = createDiv()
     const vm = new VM('<div @shortkey="bar" v-shortkey="[\'a\']"><button type="button" @shortkey="foo" v-shortkey="[\'b\']">TEST</button></div>')
 
     vm.$mount(div)
