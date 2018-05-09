@@ -79,9 +79,8 @@ describe('functionnal tests', () => {
 
   describe('Dispatch triggered event', () => {
     it('listen for keydown and dispatch simple event', () => {
-      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
-      vm.$mount(div)
+      vm.$mount(createDiv())
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -96,9 +95,8 @@ describe('functionnal tests', () => {
     })
 
     it('unbind simple events', () => {
-      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
-      vm.$mount(div)
+      vm.$mount(createDiv())
 
       vm.$destroy()
 
@@ -114,7 +112,6 @@ describe('functionnal tests', () => {
     });
 
     it('listen for keydown and dispatch event with object key', (done) => {
-      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
 
       const stubFoo = sinon.stub(vm, 'foo').callsFake(fn => {
@@ -123,8 +120,7 @@ describe('functionnal tests', () => {
         vm.$destroy()
         done()
       })
-
-      vm.$mount(div)
+      vm.$mount(createDiv())
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -138,10 +134,8 @@ describe('functionnal tests', () => {
     })
 
     it('unbind event with object key', () => {
-      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
-
-      vm.$mount(div)
+      vm.$mount(createDiv())
       vm.$destroy()
 
       const keydown = createEvent('keydown')
@@ -159,10 +153,8 @@ describe('functionnal tests', () => {
 
   describe('Don`t dispatch triggered event', () => {
     it('dont trigger listen for keydown and dispatch event', () => {
-      const div = createDiv()
-
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea v-shortkey.avoid></textarea></div>')
-      vm.$mount(div)
+      vm.$mount(createDiv())
 
       const textarea = vm.$el.querySelector('textarea')
       textarea.focus()
@@ -181,9 +173,8 @@ describe('functionnal tests', () => {
     })
 
     it('listen for keydown and dispatch event with object key', () => {
-      const div = createDiv()
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"><textarea v-shortkey.avoid></textarea></div>')
-      vm.$mount(div)
+      vm.$mount(createDiv())
 
       const textarea = vm.$el.querySelector('textarea')
       textarea.focus()
@@ -203,10 +194,8 @@ describe('functionnal tests', () => {
   })
 
   it('Setting focus with .focus modifier', () => {
-    const div = createDiv()
-
     const vm = new VM(`<div><input type="text" /> <button type="button" v-shortkey.focus="['f']">BUTTON</button></div>`)
-    vm.$mount(div)
+    vm.$mount(createDiv())
 
     const inputText = vm.$el.querySelector('input')
     inputText.focus()
@@ -226,10 +215,8 @@ describe('functionnal tests', () => {
   })
 
   it('Bring push button with .push modifier', () => {
-    const div = createDiv()
-
     const vm = new VM(`<div><button type="button" v-shortkey.push="['p']" @shortkey="foo()">BUTTON</button></div>`)
-    vm.$mount(div)
+    vm.$mount(createDiv())
 
     const spyFoo = sinon.spy(vm, 'foo')
 
@@ -247,10 +234,8 @@ describe('functionnal tests', () => {
   })
 
   it('Testing delete key', () => {
-    const div = createDiv()
-
     const vm = new VM(`<button @shortkey="foo" v-shortkey="['del']"></button>`)
-    vm.$mount(div)
+    vm.$mount(createDiv())
 
     const keydown = createEvent('keydown')
     keydown.key = 'Delete'
@@ -265,10 +250,8 @@ describe('functionnal tests', () => {
   })
 
   it('Testing ? key', () => {
-    const div = createDiv()
-
     const vm = new VM(`<button @shortkey="foo" v-shortkey="['shift', '?']"></button>`)
-    vm.$mount(div)
+    vm.$mount(createDiv())
 
     const keydown = createEvent('keydown')
     keydown.shiftKey = true
@@ -285,10 +268,8 @@ describe('functionnal tests', () => {
   })
 
   it('Prevent bubble event', () => {
-    const div = createDiv()
     const vm = new VM('<div @shortkey="bar" v-shortkey="[\'a\']"><button type="button" @shortkey="foo" v-shortkey="[\'b\']">TEST</button></div>')
-
-    vm.$mount(div)
+    vm.$mount(createDiv())
 
     const textarea = vm.$el.querySelector('button')
     const keydown = createEvent('keydown')
