@@ -4,12 +4,40 @@ let objAvoided = []
 let elementAvoided = []
 let keyPressed = false
 
-const parseValue = (binding) => {
-  const value = typeof binding.value === 'string' ? JSON.parse(binding.value.replace(/\'/gi, '"')) : binding.value
+const parseValue = (value) => {
+  value = typeof value === 'string' ? JSON.parse(value.replace(/\'/gi, '"')) : value
   if (value instanceof Array) {
     return {'': value};
   }
   return value
+}
+
+const bindValue = (value, el, binding, vnode) => {
+  const push = binding.modifiers.push === true
+  const avoid = binding.modifiers.avoid === true
+  const focus = !binding.modifiers.focus === true
+  const once = binding.modifiers.once === true
+  if (avoid) {
+    objAvoided.push(el)
+  } else {
+    mappingFunctions({b: value, push, once, focus, el: vnode.elm})
+  }
+}
+
+const unbindValue = (value, el) => {
+  for (let item in value) {
+    const k = value[item].join('')
+    const idxElm = mapFunctions[k].el.indexOf(el)
+    if (mapFunctions[k].el.length > 1 && idxElm > -1) {
+      mapFunctions[k].el.splice(idxElm, 1)
+    } else {
+      delete mapFunctions[k]
+    }
+
+    objAvoided = objAvoided.filter((itm) => {
+      return !itm === el;
+    })
+  }
 }
 
 ShortKey.install = (Vue, options) => {
@@ -17,32 +45,19 @@ ShortKey.install = (Vue, options) => {
   Vue.directive('shortkey', {
     bind: (el, binding, vnode) => {
       // Mapping the commands
-      const b = parseValue(binding)
-      const push = binding.modifiers.push === true
-      const avoid = binding.modifiers.avoid === true
-      const focus = !binding.modifiers.focus === true
-      const once = binding.modifiers.once === true
-      if (avoid) {
-        objAvoided.push(el)
-      } else {
-        mappingFunctions({b, push, once, focus, el: vnode.elm})
-      }
+      const value = parseValue(binding.value)
+      bindValue(value, el, binding, vnode)
+    },
+    update: (el, binding, vnode) => {
+      const oldValue = parseValue(binding.oldValue)
+      unbindValue(oldValue, el)
+
+      const newValue = parseValue(binding.value)
+      bindValue(newValue, el, binding, vnode)
     },
     unbind: (el, binding) => {
-      const b = parseValue(binding)
-      for (let item in b) {
-        const k = b[item].join('')
-        const idxElm = mapFunctions[k].el.indexOf(el)
-        if (mapFunctions[k].el.length > 1 && idxElm > -1) {
-          mapFunctions[k].el.splice(idxElm, 1)
-        } else {
-          delete mapFunctions[k]
-        }
-      }
-
-      objAvoided = objAvoided.filter((itm) => {
-        return !itm === el;
-      })
+      const value = parseValue(binding.value)
+      unbindValue(value, el)
     }
   })
 }

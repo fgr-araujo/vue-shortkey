@@ -267,6 +267,36 @@ describe('functionnal tests', () => {
     vm.$destroy()
   })
 
+  it("Update the binding", (done) => {
+    const vm = VM(`<div>
+                      <div v-if="!called" class="first" @shortkey="foo" v-shortkey="[\'q\']">foo</div>
+                      <div v-else         class="test"  @shortkey="bar" v-shortkey="[\'g\']">bar</div>
+                    </div>`)
+    vm.$mount(createDiv())
+    const keydown = createEvent('keydown')
+    keydown.key = 'q'
+    document.dispatchEvent(keydown)
+
+    const keyup = createEvent('keyup')
+    keydown.key = 'q'
+    document.dispatchEvent(keyup)
+
+    expect(vm.called).to.be.true
+    Vue.nextTick(() => {
+      const keydown2 = createEvent('keydown')
+      keydown2.key = 'g'
+      document.dispatchEvent(keydown2)
+
+      const keyup2 = createEvent('keyup')
+      keydown2.key = 'g'
+      document.dispatchEvent(keyup2)
+
+      expect(vm.calledBubble).to.be.true
+      vm.$destroy()
+      done()
+    })
+  })
+
   it('Prevent bubble event', () => {
     const vm = new VM('<div @shortkey="bar" v-shortkey="[\'a\']"><button type="button" @shortkey="foo" v-shortkey="[\'b\']">TEST</button></div>')
     vm.$mount(createDiv())
