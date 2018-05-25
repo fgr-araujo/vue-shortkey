@@ -6,8 +6,8 @@ import Shortkey from '../src/index.js'
 find.shim()
 
 Vue.use(Shortkey)
-const VM = pTemplate => new Vue({
-  template: pTemplate,
+const VM = template => new Vue({
+  template,
   data() {
     return {
       called: false,
