@@ -162,27 +162,47 @@ const filteringElement = (pKey) => {
   const elementSeparate = checkElementType()
   const elementTypeAvoid = elementSeparate.avoidedTypes
   const elementClassAvoid = elementSeparate.avoidedClasses
+  const avoidExcludedKeys = elementSeparate.excludedKeys
   const filterTypeAvoid = elementTypeAvoid.find(r => document.activeElement && r === document.activeElement.tagName.toLowerCase())
   const filterClassAvoid = elementClassAvoid.find(r => document.activeElement && r === '.' + document.activeElement.className.toLowerCase())
-  return !objectAvoid && mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid
+  const filterExcludedKeys = avoidExcludedKeys.find(r.name === filterTypeAvoid && r.keys === mapFunctions[decodedKey]) || avoidExcludedKeys.find(r.name === filterClassAvoid && r.keys === mapFunctions[decodedKey])
+  return !objectAvoid && mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid && !filterExcludedKeys;
 }
+
 
 const checkElementType = () => {
   let elmTypeAvoid = []
   let elmClassAvoid = []
+  let avoidExcludedKeys = []
   elementAvoided.forEach(r => {
-    const dotPosition = r.indexOf('.')
-    if (dotPosition === 0) {
-      elmClassAvoid.push(r)
-    } else if (dotPosition > 0) {
-      elmTypeAvoid.push(r.split('.')[0])
-      elmClassAvoid.push('.' + r.split('.')[1])
-    } else {
-      elmTypeAvoid.push(r)
-    }
+    let obj = r;
+    let excluded = null;
+    if(r.hasOnwProperty('name') && r.hasOnwProperty('excludeKeys'){
+       obj = r.name;
+       excluded = r.excludedKeys;
+      } 
+      const dotPosition = obj.indexOf('.')
+      if (dotPosition === 0) {
+        elmClassAvoid.push(obj)
+        if(excluded !== null){
+          avoidExcludedKeys.push({name: obj, keys: excluded});
+        }
+      } else if (dotPosition > 0) {
+        elmTypeAvoid.push(obj.split('.')[0])
+        elmClassAvoid.push('.' + obj.split('.')[1])
+        if(excluded !== null){
+          avoidExcludedKeys.push({name: obj.split('.')[0], keys: excluded});
+          avoidExcludedKeys.push({name: '.' + obj.split('.')[1], keys: excluded});
+        }
+      } else {
+        elmTypeAvoid.push(obj);
+         if(excluded !== null){
+          avoidExcludedKeys.push({name: obj, keys: excluded});
+        }
+      }
   })
 
-  return {avoidedTypes: elmTypeAvoid, avoidedClasses: elmClassAvoid}
+  return {avoidedTypes: elmTypeAvoid, avoidedClasses: elmClassAvoid, excludedKeys: avoidExcludedKeys}
 }
 
 if (typeof module != 'undefined' && module.exports) {
