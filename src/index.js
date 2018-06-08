@@ -5,210 +5,272 @@ let elementAvoided = []
 let keyPressed = false
 
 const parseValue = (value) => {
-  value = typeof value === 'string' ? JSON.parse(value.replace(/\'/gi, '"')) : value
-  if (value instanceof Array) {
-    return {'': value};
-  }
-  return value
+    value = typeof value === 'string' ? JSON.parse(value.replace(/\'/gi, '"')) : value
+    if (value instanceof Array) {
+        return {'': value};
+    }
+    return value
 }
 
 const bindValue = (value, el, binding, vnode) => {
-  const push = binding.modifiers.push === true
-  const avoid = binding.modifiers.avoid === true
-  const focus = !binding.modifiers.focus === true
-  const once = binding.modifiers.once === true
-  if (avoid) {
-    objAvoided.push(el)
-  } else {
-    mappingFunctions({b: value, push, once, focus, el: vnode.elm})
-  }
+    const push = binding.modifiers.push === true
+    const avoid = binding.modifiers.avoid === true
+    const focus = !binding.modifiers.focus === true
+    const once = binding.modifiers.once === true
+    if (avoid) {
+        objAvoided.push(el)
+    } else {
+        mappingFunctions({b: value, push, once, focus, el: vnode.elm})
+    }
 }
 
 const unbindValue = (value, el) => {
-  for (let item in value) {
-    const k = value[item].join('')
-    const idxElm = mapFunctions[k].el.indexOf(el)
-    if (mapFunctions[k].el.length > 1 && idxElm > -1) {
-      mapFunctions[k].el.splice(idxElm, 1)
-    } else {
-      delete mapFunctions[k]
-    }
+    for (let item in value) {
+        const k = value[item].join('')
+        const idxElm = mapFunctions[k].el.indexOf(el)
+        if (mapFunctions[k].el.length > 1 && idxElm > -1) {
+            mapFunctions[k].el.splice(idxElm, 1)
+        } else {
+            delete mapFunctions[k]
+        }
 
-    objAvoided = objAvoided.filter((itm) => {
-      return !itm === el;
-    })
-  }
+        objAvoided = objAvoided.filter((itm) => {
+            return !itm === el;
+        })
+    }
 }
 
 ShortKey.install = (Vue, options) => {
-  elementAvoided = [...(options && options.prevent ? options.prevent : [])]
-  Vue.directive('shortkey', {
-    bind: (el, binding, vnode) => {
-      // Mapping the commands
-      const value = parseValue(binding.value)
-      bindValue(value, el, binding, vnode)
-    },
-    update: (el, binding, vnode) => {
-      const oldValue = parseValue(binding.oldValue)
-      unbindValue(oldValue, el)
+    elementAvoided = [...(options && options.prevent ? options.prevent : [])];
+    Vue.directive('shortkey', {
+        bind: (el, binding, vnode) => {
+            // Mapping the commands
+            const value = parseValue(binding.value)
+            bindValue(value, el, binding, vnode)
+        },
+        update: (el, binding, vnode) => {
+            const oldValue = parseValue(binding.oldValue)
+            unbindValue(oldValue, el)
 
-      const newValue = parseValue(binding.value)
-      bindValue(newValue, el, binding, vnode)
-    },
-    unbind: (el, binding) => {
-      const value = parseValue(binding.value)
-      unbindValue(value, el)
-    }
-  })
+            const newValue = parseValue(binding.value)
+            bindValue(newValue, el, binding, vnode)
+        },
+        unbind: (el, binding) => {
+            const value = parseValue(binding.value)
+            unbindValue(value, el)
+        }
+    })
 }
 
 ShortKey.decodeKey = (pKey) => {
-  let k = ''
-  if (pKey.key === 'Shift' || pKey.shiftKey) { k += 'shift' }
-  if (pKey.key === 'Control' || pKey.ctrlKey) { k += 'ctrl' }
-  if (pKey.key === 'Meta'|| pKey.metaKey) { k += 'meta' }
-  if (pKey.key === 'Alt' || pKey.altKey) { k += 'alt' }
-  if (pKey.key === 'ArrowUp') { k += 'arrowup' }
-  if (pKey.key === 'ArrowLeft') { k += 'arrowleft' }
-  if (pKey.key === 'ArrowRight') { k += 'arrowright' }
-  if (pKey.key === 'ArrowDown') { k += 'arrowdown' }
-  if (pKey.key === 'AltGraph') { k += 'altgraph' }
-  if (pKey.key === 'Escape') { k += 'esc' }
-  if (pKey.key === 'Enter') { k += 'enter' }
-  if (pKey.key === 'Tab') { k += 'tab' }
-  if (pKey.key === ' ') { k += 'space' }
-  if (pKey.key === 'PageUp') { k += 'pageup' }
-  if (pKey.key === 'PageDown') { k += 'pagedown' }
-  if (pKey.key === 'Home') { k += 'home' }
-  if (pKey.key === 'End') { k += 'end' }
-  if (pKey.key === 'Delete') { k += 'del' }
-  if (pKey.key === 'Insert') { k += 'insert' }
-  if (pKey.key === 'NumLock') { k += 'numlock' }
-  if (pKey.key === 'CapsLock') { k += 'capslock' }
-  if (pKey.key === 'Pause') { k += 'pause' }
-  if (pKey.key === 'ContextMenu') { k += 'contextmenu' }
-  if (pKey.key === 'ScrollLock') { k += 'scrolllock' }
-  if (pKey.key === 'BrowserHome') { k += 'browserhome' }
-  if (pKey.key === 'MediaSelect') { k += 'mediaselect' }
-  if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}|\//g.test(pKey.key)) k += pKey.key.toLowerCase()
-  return k
+    let k = ''
+    if (pKey.key === 'Shift' || pKey.shiftKey) {
+        k += 'shift'
+    }
+    if (pKey.key === 'Control' || pKey.ctrlKey) {
+        k += 'ctrl'
+    }
+    if (pKey.key === 'Meta' || pKey.metaKey) {
+        k += 'meta'
+    }
+    if (pKey.key === 'Alt' || pKey.altKey) {
+        k += 'alt'
+    }
+    if (pKey.key === 'ArrowUp') {
+        k += 'arrowup'
+    }
+    if (pKey.key === 'ArrowLeft') {
+        k += 'arrowleft'
+    }
+    if (pKey.key === 'ArrowRight') {
+        k += 'arrowright'
+    }
+    if (pKey.key === 'ArrowDown') {
+        k += 'arrowdown'
+    }
+    if (pKey.key === 'AltGraph') {
+        k += 'altgraph'
+    }
+    if (pKey.key === 'Escape') {
+        k += 'esc'
+    }
+    if (pKey.key === 'Enter') {
+        k += 'enter'
+    }
+    if (pKey.key === 'Tab') {
+        k += 'tab'
+    }
+    if (pKey.key === ' ') {
+        k += 'space'
+    }
+    if (pKey.key === 'PageUp') {
+        k += 'pageup'
+    }
+    if (pKey.key === 'PageDown') {
+        k += 'pagedown'
+    }
+    if (pKey.key === 'Home') {
+        k += 'home'
+    }
+    if (pKey.key === 'End') {
+        k += 'end'
+    }
+    if (pKey.key === 'Delete') {
+        k += 'del'
+    }
+    if (pKey.key === 'Insert') {
+        k += 'insert'
+    }
+    if (pKey.key === 'NumLock') {
+        k += 'numlock'
+    }
+    if (pKey.key === 'CapsLock') {
+        k += 'capslock'
+    }
+    if (pKey.key === 'Pause') {
+        k += 'pause'
+    }
+    if (pKey.key === 'ContextMenu') {
+        k += 'contextmenu'
+    }
+    if (pKey.key === 'ScrollLock') {
+        k += 'scrolllock'
+    }
+    if (pKey.key === 'BrowserHome') {
+        k += 'browserhome'
+    }
+    if (pKey.key === 'MediaSelect') {
+        k += 'mediaselect'
+    }
+    if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}|\//g.test(pKey.key)) k += pKey.key.toLowerCase()
+    return k
 }
 
 const dispatchShortkeyEvent = (pKey) => {
-  const e = new Event('shortkey', { bubbles: false })
-  if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
-  const elm = mapFunctions[pKey].el
-  elm[elm.length - 1].dispatchEvent(e)
+    const e = new Event('shortkey', {bubbles: false})
+    if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
+    const elm = mapFunctions[pKey].el
+    elm[elm.length - 1].dispatchEvent(e)
 }
 
 ShortKey.keyDown = (pKey) => {
-  if ((!mapFunctions[pKey].once && !mapFunctions[pKey].push) || (mapFunctions[pKey].push && !keyPressed)) {
-    dispatchShortkeyEvent(pKey)
-  }
+    if ((!mapFunctions[pKey].once && !mapFunctions[pKey].push) || (mapFunctions[pKey].push && !keyPressed)) {
+        dispatchShortkeyEvent(pKey)
+    }
 }
 
 if (process.env.NODE_ENV !== 'test') {
-  ;(function () {
-    document.addEventListener('keydown', (pKey) => {
-      const decodedKey = ShortKey.decodeKey(pKey)
+    ;(function () {
+        document.addEventListener('keydown', (pKey) => {
+            const decodedKey = ShortKey.decodeKey(pKey)
+            // Check evict
+            if (filteringElement(pKey)) {
+                pKey.preventDefault()
+                pKey.stopPropagation()
+                if (mapFunctions[decodedKey].focus) {
+                    ShortKey.keyDown(decodedKey)
+                    keyPressed = true
+                } else if (!keyPressed) {
+                    const elm = mapFunctions[decodedKey].el
+                    elm[elm.length - 1].focus()
+                    keyPressed = true
+                }
+            }
+        }, true)
 
-      // Check evict
-      if (filteringElement(pKey)) {
-        pKey.preventDefault()
-        pKey.stopPropagation()
-        if (mapFunctions[decodedKey].focus) {
-          ShortKey.keyDown(decodedKey)
-          keyPressed = true
-        } else if (!keyPressed) {
-          const elm = mapFunctions[decodedKey].el
-          elm[elm.length - 1].focus()
-          keyPressed = true
-        }
-      }
-    }, true)
-
-    document.addEventListener('keyup', (pKey) => {
-      const decodedKey = ShortKey.decodeKey(pKey)
-      if (filteringElement(pKey)) {
-        pKey.preventDefault()
-        pKey.stopPropagation()
-        if (mapFunctions[decodedKey].once || mapFunctions[decodedKey].push) {
-          dispatchShortkeyEvent(decodedKey);
-        }
-      }
-      keyPressed = false
-    }, true)
-  })()
+        document.addEventListener('keyup', (pKey) => {
+            const decodedKey = ShortKey.decodeKey(pKey)
+            if (filteringElement(pKey)) {
+                pKey.preventDefault()
+                pKey.stopPropagation()
+                if (mapFunctions[decodedKey].once || mapFunctions[decodedKey].push) {
+                    dispatchShortkeyEvent(decodedKey);
+                }
+            }
+            keyPressed = false
+        }, true)
+    })()
 }
 
 const mappingFunctions = ({b, push, once, focus, el}) => {
-  for (let key in b) {
-    const k = b[key].join('')
-    const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
-    elm.push(el)
-    mapFunctions[k] = {
-      push,
-      once,
-      focus,
-      key,
-      el: elm
+    for (let key in b) {
+        const k = b[key].join('')
+        const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
+        elm.push(el)
+        mapFunctions[k] = {
+            push,
+            once,
+            focus,
+            key,
+            el: elm
+        }
     }
-  }
 }
 
 const filteringElement = (pKey) => {
-  const decodedKey = ShortKey.decodeKey(pKey)
-  const objectAvoid = objAvoided.find(r => r === document.activeElement)
-  const elementSeparate = checkElementType()
-  const elementTypeAvoid = elementSeparate.avoidedTypes
-  const elementClassAvoid = elementSeparate.avoidedClasses
-  const avoidExcludedKeys = elementSeparate.excludedKeys
-  const filterTypeAvoid = elementTypeAvoid.find(r => document.activeElement && r === document.activeElement.tagName.toLowerCase())
-  const filterClassAvoid = elementClassAvoid.find(r => document.activeElement && r === '.' + document.activeElement.className.toLowerCase())
-  const filterExcludedKeys = avoidExcludedKeys.find(r.name === filterTypeAvoid && r.keys === mapFunctions[decodedKey]) || avoidExcludedKeys.find(r.name === filterClassAvoid && r.keys === mapFunctions[decodedKey])
-  return !objectAvoid && mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid && !filterExcludedKeys;
+    const decodedKey = ShortKey.decodeKey(pKey)
+    const objectAvoid = objAvoided.find(r => r === document.activeElement)
+    const elementSeparate = checkElementType()
+    const elementTypeAvoid = elementSeparate.avoidedTypes
+    const elementClassAvoid = elementSeparate.avoidedClasses
+    const avoidExcludedKeys = elementSeparate.excludedKeys
+    const filterTypeAvoid = elementTypeAvoid.find(r => document.activeElement && r === document.activeElement.tagName.toLowerCase())
+    const filterClassAvoid = elementClassAvoid.find(r => document.activeElement && r === '.' + document.activeElement.className.toLowerCase())
+    const filterExcludedTypeKeys = avoidExcludedKeys.find(r => r.name === filterTypeAvoid && r.keys.includes(decodedKey)) !== undefined;
+    const filterExcludedClassKeys = avoidExcludedKeys.find(r => r.name === filterClassAvoid && r.keys.includes(decodedKey)) !== undefined;
+
+    if (!objectAvoid && mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid) {
+        return true;
+    } else {
+        if(filterExcludedTypeKeys || filterExcludedClassKeys){
+            return true;
+        }
+        return false;
+    }
 }
 
 
 const checkElementType = () => {
-  let elmTypeAvoid = []
-  let elmClassAvoid = []
-  let avoidExcludedKeys = []
-  elementAvoided.forEach(r => {
-    let obj = r;
-    let excluded = null;
-    if(r.hasOnwProperty('name') && r.hasOnwProperty('excludeKeys'){
-       obj = r.name;
-       excluded = r.excludedKeys;
-      } 
-      const dotPosition = obj.indexOf('.')
-      if (dotPosition === 0) {
-        elmClassAvoid.push(obj)
-        if(excluded !== null){
-          avoidExcludedKeys.push({name: obj, keys: excluded});
+    let elmTypeAvoid = []
+    let elmClassAvoid = []
+    let avoidExcludedKeys = []
+    elementAvoided.forEach(r => {
+        let obj = r;
+        let excluded = null;
+        if (typeof obj === 'object' && r.hasOwnProperty('name') && r.hasOwnProperty('excludeKeys')) {
+            obj = r.name;
+            excluded = r.excludeKeys;
         }
-      } else if (dotPosition > 0) {
-        elmTypeAvoid.push(obj.split('.')[0])
-        elmClassAvoid.push('.' + obj.split('.')[1])
-        if(excluded !== null){
-          avoidExcludedKeys.push({name: obj.split('.')[0], keys: excluded});
-          avoidExcludedKeys.push({name: '.' + obj.split('.')[1], keys: excluded});
+        const dotPosition = obj.indexOf('.');
+        if (dotPosition === 0) {
+            elmClassAvoid.push(obj)
+            if (excluded !== null) {
+                avoidExcludedKeys.push({name: obj, keys: excluded});
+            }
+        } else if (dotPosition > 0) {
+            elmTypeAvoid.push(obj.split('.')[0])
+            elmClassAvoid.push('.' + obj.split('.')[1])
+            if (excluded !== null) {
+                avoidExcludedKeys.push({name: obj.split('.')[0], keys: excluded});
+                avoidExcludedKeys.push({name: '.' + obj.split('.')[1], keys: excluded});
+            }
+        } else {
+            elmTypeAvoid.push(obj);
+            if (excluded !== null) {
+                avoidExcludedKeys.push({name: obj, keys: excluded});
+            }
         }
-      } else {
-        elmTypeAvoid.push(obj);
-         if(excluded !== null){
-          avoidExcludedKeys.push({name: obj, keys: excluded});
-        }
-      }
-  })
+    })
 
-  return {avoidedTypes: elmTypeAvoid, avoidedClasses: elmClassAvoid, excludedKeys: avoidExcludedKeys}
+    return {avoidedTypes: elmTypeAvoid, avoidedClasses: elmClassAvoid, excludedKeys: avoidExcludedKeys}
 }
 
 if (typeof module != 'undefined' && module.exports) {
-  module.exports = ShortKey;
+    module.exports = ShortKey;
 } else if (typeof define == 'function' && define.amd) {
-  define( function () { return ShortKey; } );
+    define(function () {
+        return ShortKey;
+    });
 } else {
-  window.ShortKey = ShortKey;
+    window.ShortKey = ShortKey;
 }
