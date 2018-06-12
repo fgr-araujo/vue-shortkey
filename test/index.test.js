@@ -233,7 +233,7 @@ describe('functionnal tests', () => {
     })
 
     it('does trigger events when only the parent element gets matched by one item in the prevent list', () => {
-      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']" class="disableshortkey"><input></input></div>')
+      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']" class="disableshortkey"><input type="text" /></div>')
       vm.$mount(createDiv())
 
       const input = vm.$el.querySelector('input')
