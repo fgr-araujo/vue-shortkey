@@ -1,5 +1,3 @@
-import 'element-matches';
-
 let ShortKey = {}
 let mapFunctions = {}
 let objAvoided = []
@@ -161,10 +159,30 @@ const mappingFunctions = ({b, push, once, focus, el}) => {
 const filteringElement = (pKey) => {
   const decodedKey = ShortKey.decodeKey(pKey)
   const objectAvoid = objAvoided.find(r => r === document.activeElement)
+  const elementSeparate = checkElementType()
+  const elementTypeAvoid = elementSeparate.avoidedTypes
+  const elementClassAvoid = elementSeparate.avoidedClasses
+  const filterTypeAvoid = elementTypeAvoid.find(r => document.activeElement && r === document.activeElement.tagName.toLowerCase())
+  const filterClassAvoid = elementClassAvoid.find(r => document.activeElement && r === '.' + document.activeElement.className.toLowerCase())
+  return !objectAvoid && mapFunctions[decodedKey] && !filterTypeAvoid && !filterClassAvoid
+}
 
-  // check if the element gets matched by at least one selector in the prevent list
-  const filterAvoid = elementAvoided.find(selector => document.activeElement && document.activeElement.matches(selector))
-  return !objectAvoid && mapFunctions[decodedKey] && !filterAvoid
+const checkElementType = () => {
+  let elmTypeAvoid = []
+  let elmClassAvoid = []
+  elementAvoided.forEach(r => {
+    const dotPosition = r.indexOf('.')
+    if (dotPosition === 0) {
+      elmClassAvoid.push(r)
+    } else if (dotPosition > 0) {
+      elmTypeAvoid.push(r.split('.')[0])
+      elmClassAvoid.push('.' + r.split('.')[1])
+    } else {
+      elmTypeAvoid.push(r)
+    }
+  })
+
+  return {avoidedTypes: elmTypeAvoid, avoidedClasses: elmClassAvoid}
 }
 
 if (typeof module != 'undefined' && module.exports) {

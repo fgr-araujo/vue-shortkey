@@ -5,7 +5,7 @@ import Shortkey from '../src/index.js'
 
 find.shim()
 
-Vue.use(Shortkey, { prevent: ['.disableshortkey', '.disableshortkey textarea'] })
+Vue.use(Shortkey)
 const VM = template => new Vue({
   template,
   data() {
@@ -169,86 +169,6 @@ describe('functionnal tests', () => {
       document.dispatchEvent(keyup)
 
       expect(vm.called).to.be.false
-      vm.$destroy()
-    })
-
-    it('does not trigger events when its class is in the prevent list', () => {
-      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea class="disableshortkey"></textarea></div>')
-      vm.$mount(createDiv())
-
-      const textarea = vm.$el.querySelector('textarea')
-      textarea.focus()
-      expect(document.activeElement == textarea).to.be.true
-
-      const keydown = createEvent('keydown')
-      keydown.key = 'b'
-      document.dispatchEvent(keydown)
-
-      const keyup = createEvent('keyup')
-      keyup.key = 'b'
-      document.dispatchEvent(keyup)
-
-      expect(vm.called).to.be.false
-      vm.$destroy()
-    })
-
-    it('does not trigger events when one of its classes is in the prevent list', () => {
-      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea class="disableshortkey stylingclass"></textarea></div>')
-      vm.$mount(createDiv())
-
-      const textarea = vm.$el.querySelector('textarea')
-      textarea.focus()
-      expect(document.activeElement == textarea).to.be.true
-
-      const keydown = createEvent('keydown')
-      keydown.key = 'b'
-      document.dispatchEvent(keydown)
-
-      const keyup = createEvent('keyup')
-      keyup.key = 'b'
-      document.dispatchEvent(keyup)
-
-      expect(vm.called).to.be.false
-      vm.$destroy()
-    })
-
-    it('does not trigger events when it gets matched by one item in the prevent list', () => {
-      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']" class="disableshortkey"><textarea class="stylingclass"></textarea></div>')
-      vm.$mount(createDiv())
-
-      const textarea = vm.$el.querySelector('textarea')
-      textarea.focus()
-      expect(document.activeElement == textarea).to.be.true
-
-      const keydown = createEvent('keydown')
-      keydown.key = 'b'
-      document.dispatchEvent(keydown)
-
-      const keyup = createEvent('keyup')
-      keyup.key = 'b'
-      document.dispatchEvent(keyup)
-
-      expect(vm.called).to.be.false
-      vm.$destroy()
-    })
-
-    it('does trigger events when only the parent element gets matched by one item in the prevent list', () => {
-      const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']" class="disableshortkey"><input type="text" /></div>')
-      vm.$mount(createDiv())
-
-      const input = vm.$el.querySelector('input')
-      input.focus()
-      expect(document.activeElement == input).to.be.true
-
-      const keydown = createEvent('keydown')
-      keydown.key = 'b'
-      document.dispatchEvent(keydown)
-
-      const keyup = createEvent('keyup')
-      keyup.key = 'b'
-      document.dispatchEvent(keyup)
-
-      expect(vm.called).to.be.true
       vm.$destroy()
     })
 
