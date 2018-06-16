@@ -109,7 +109,7 @@ ShortKey.keyDown = (pKey) => {
   }
 }
 
-if (process.env.NODE_ENV !== 'test') {
+if (process && process.env && process.env.NODE_ENV !== 'test') {
   ;(function () {
     document.addEventListener('keydown', (pKey) => {
       const decodedKey = ShortKey.decodeKey(pKey)
@@ -162,7 +162,6 @@ const filteringElement = (pKey) => {
   const decodedKey = ShortKey.decodeKey(pKey)
   const objectAvoid = objAvoided.find(r => r === document.activeElement)
 
-  // check if the element gets matched by at least one selector in the prevent list
   const filterAvoid = elementAvoided.find(selector => document.activeElement && document.activeElement.matches(selector))
   return !objectAvoid && mapFunctions[decodedKey] && !filterAvoid
 }
