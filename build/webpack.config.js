@@ -1,5 +1,6 @@
 var path = require('path')
 var webpack = require('webpack')
+var libraryName = 'VueShortkey'
 
 module.exports = {
   entry: './src/index.js',
@@ -7,7 +8,9 @@ module.exports = {
     path: path.resolve(__dirname, '../dist/'),
     publicPath: '../dist/',
     filename: 'index.js',
-    libraryTarget: 'umd'
+    library: libraryName,
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   module: {
     rules: [
