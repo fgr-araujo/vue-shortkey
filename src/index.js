@@ -113,9 +113,8 @@ if (process && process.env && process.env.NODE_ENV !== 'test') {
   ;(function () {
     document.addEventListener('keydown', (pKey) => {
       const decodedKey = ShortKey.decodeKey(pKey)
-
-      // Check evict
-      if (filteringElement(pKey)) {
+      // Check avoidable elements
+      if (availableElement(decodedKey)) {
         pKey.preventDefault()
         pKey.stopPropagation()
         if (mapFunctions[decodedKey].focus) {
@@ -131,7 +130,7 @@ if (process && process.env && process.env.NODE_ENV !== 'test') {
 
     document.addEventListener('keyup', (pKey) => {
       const decodedKey = ShortKey.decodeKey(pKey)
-      if (filteringElement(pKey)) {
+      if (availableElement(decodedKey)) {
         pKey.preventDefault()
         pKey.stopPropagation()
         if (mapFunctions[decodedKey].once || mapFunctions[decodedKey].push) {
