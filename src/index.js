@@ -20,6 +20,9 @@ const bindValue = (value, el, binding, vnode) => {
   const focus = !binding.modifiers.focus === true
   const once = binding.modifiers.once === true
   if (avoid) {
+    objAvoided = objAvoided.filter((itm) => {
+      return !itm === el;
+    })
     objAvoided.push(el)
   } else {
     mappingFunctions({b: value, push, once, focus, el: vnode.elm})
@@ -35,10 +38,6 @@ const unbindValue = (value, el) => {
     } else {
       delete mapFunctions[k]
     }
-
-    objAvoided = objAvoided.filter((itm) => {
-      return !itm === el;
-    })
   }
 }
 
@@ -159,16 +158,16 @@ const mappingFunctions = ({b, push, once, focus, el}) => {
 
 const availableElement = (decodedKey) => {
   const objectIsAvoided = !!objAvoided.find(r => r === document.activeElement)
-  const filterAvoided = !!elementAvoided.find(selector => document.activeElement && document.activeElement.matches(selector))
+  const filterAvoided = !!(elementAvoided.find(selector => document.activeElement && document.activeElement.matches(selector)))
 
   return !!mapFunctions[decodedKey] && !(objectIsAvoided || filterAvoided)
 }
 
 export default ShortKey
-// if (typeof module != 'undefined' && module.exports) {
-//   module.exports = ShortKey;
-// } else if (typeof define == 'function' && define.amd) {
-//   define( function () { return ShortKey; } );
-// } else {
-//   window.ShortKey = ShortKey;
-// }
+if (typeof module != 'undefined' && module.exports) {
+  module.exports = ShortKey;
+} else if (typeof define == 'function' && define.amd) {
+  define( function () { return ShortKey; } );
+} else {
+  window.ShortKey = ShortKey;
+}
