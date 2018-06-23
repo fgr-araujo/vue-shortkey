@@ -158,18 +158,18 @@ const mappingFunctions = ({b, push, once, focus, el}) => {
   }
 }
 
-const filteringElement = (pKey) => {
-  const decodedKey = ShortKey.decodeKey(pKey)
-  const objectAvoid = objAvoided.find(r => r === document.activeElement)
+const availableElement = (decodedKey) => {
+  const objectIsAvoided = !!objAvoided.find(r => r === document.activeElement)
+  const filterAvoided = !!elementAvoided.find(selector => document.activeElement && document.activeElement.matches(selector))
 
-  const filterAvoid = elementAvoided.find(selector => document.activeElement && document.activeElement.matches(selector))
-  return !objectAvoid && mapFunctions[decodedKey] && !filterAvoid
+  return !!mapFunctions[decodedKey] && !(objectIsAvoided || filterAvoided)
 }
 
-if (typeof module != 'undefined' && module.exports) {
-  module.exports = ShortKey;
-} else if (typeof define == 'function' && define.amd) {
-  define( function () { return ShortKey; } );
-} else {
-  window.ShortKey = ShortKey;
-}
+export default ShortKey
+// if (typeof module != 'undefined' && module.exports) {
+//   module.exports = ShortKey;
+// } else if (typeof define == 'function' && define.amd) {
+//   define( function () { return ShortKey; } );
+// } else {
+//   window.ShortKey = ShortKey;
+// }
