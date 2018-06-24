@@ -175,7 +175,6 @@ const availableElement = (decodedKey) => {
   return !!mapFunctions[decodedKey] && !(objectIsAvoided || filterAvoided)
 }
 
-export default ShortKey
 if (typeof module != 'undefined' && module.exports) {
   module.exports = ShortKey;
 } else if (typeof define == 'function' && define.amd) {
