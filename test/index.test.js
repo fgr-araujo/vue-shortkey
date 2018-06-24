@@ -1,3 +1,4 @@
+import './Pollyfills'
 import find from  'array.prototype.find'
 import {expect} from 'chai'
 import Vue from 'vue'

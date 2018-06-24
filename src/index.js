@@ -30,8 +30,8 @@ const bindValue = (value, el, binding, vnode) => {
 }
 
 const unbindValue = (value, el) => {
-  for (let item in value) {
-    const k = value[item].join('')
+  for (let key in value) {
+    const k = ShortKey.encodeKey(value[key])
     const idxElm = mapFunctions[k].el.indexOf(el)
     if (mapFunctions[k].el.length > 1 && idxElm > -1) {
       mapFunctions[k].el.splice(idxElm, 1)
@@ -63,7 +63,20 @@ ShortKey.install = (Vue, options) => {
   })
 }
 
-ShortKey.decodeKey = (pKey) => {
+ShortKey.decodeKey = (pKey) => createShortcutIndex(pKey)
+ShortKey.encodeKey = (pKey) => {
+  const shortKey = {}
+  shortKey.shiftKey = pKey.includes('shift')
+  shortKey.ctrlKey = pKey.includes('ctrl')
+  shortKey.metaKey = pKey.includes('meta')
+  shortKey.altKey = pKey.includes('alt')
+  let indexedKeys = createShortcutIndex(shortKey)
+  const vKey = pKey.filter((item) => !['shift', 'ctrl', 'meta', 'alt'].includes(item))
+  indexedKeys += vKey.join('')
+  return indexedKeys
+}
+
+const createShortcutIndex = (pKey) => {
   let k = ''
   if (pKey.key === 'Shift' || pKey.shiftKey) { k += 'shift' }
   if (pKey.key === 'Control' || pKey.ctrlKey) { k += 'ctrl' }
@@ -143,7 +156,7 @@ if (process && process.env && process.env.NODE_ENV !== 'test') {
 
 const mappingFunctions = ({b, push, once, focus, el}) => {
   for (let key in b) {
-    const k = b[key].join('')
+    const k = ShortKey.encodeKey(b[key])
     const elm = mapFunctions[k] && mapFunctions[k].el ? mapFunctions[k].el : []
     elm.push(el)
     mapFunctions[k] = {
@@ -159,7 +172,6 @@ const mappingFunctions = ({b, push, once, focus, el}) => {
 const availableElement = (decodedKey) => {
   const objectIsAvoided = !!objAvoided.find(r => r === document.activeElement)
   const filterAvoided = !!(elementAvoided.find(selector => document.activeElement && document.activeElement.matches(selector)))
-
   return !!mapFunctions[decodedKey] && !(objectIsAvoided || filterAvoided)
 }
 
