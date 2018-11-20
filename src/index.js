@@ -96,6 +96,7 @@ const createShortcutIndex = (pKey) => {
   if (pKey.key === 'Home') { k += 'home' }
   if (pKey.key === 'End') { k += 'end' }
   if (pKey.key === 'Delete') { k += 'del' }
+  if (pKey.key === 'Backspace') { k += 'backspace' }
   if (pKey.key === 'Insert') { k += 'insert' }
   if (pKey.key === 'NumLock') { k += 'numlock' }
   if (pKey.key === 'CapsLock') { k += 'capslock' }
