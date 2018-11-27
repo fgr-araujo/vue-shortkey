@@ -52,6 +52,7 @@ describe('Index.js', () => {
       expect(Shortkey.decodeKey({key: 'Home'})).to.equal('home')
       expect(Shortkey.decodeKey({key: 'End'})).to.equal('end')
       expect(Shortkey.decodeKey({key: 'Delete'})).to.equal('del')
+      expect(Shortkey.decodeKey({key: 'Backspace'})).to.equal('backspace')
       expect(Shortkey.decodeKey({key: 'Insert'})).to.equal('insert')
       expect(Shortkey.decodeKey({key: 'NumLock'})).to.equal('numlock')
       expect(Shortkey.decodeKey({key: 'CapsLock'})).to.equal('capslock')

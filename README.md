@@ -73,6 +73,7 @@ Use the modifier `native` to catch the event.
 | Key                        | Shortkey Name |
 |----------------------------|---------------|
 | Delete                     | del           |
+| Backspace                  | backspace     |
 | Insert                     | insert        |
 | NumLock                    | numlock       |
 | CapsLock                   | capslock      |
