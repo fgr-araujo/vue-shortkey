@@ -1,5 +1,5 @@
 {
-  "name": "vue-shortkey",
+  "name": "vue-cli-plugin-shortkey",
   "description": "A plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.",
   "version": "3.1.6",
   "author": "iFgR <ifgr.fagner@gmail.com>",
@@ -20,6 +20,7 @@
   "keywords": [
     "vue",
     "vue-shortkey",
+    "vue-cli-plugin-shortkey",
     "shortcut",
     "shortkey"
   ],
