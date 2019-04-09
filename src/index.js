@@ -1,4 +1,5 @@
 import 'element-matches';
+import 'custom-event-polyfill';
 
 let ShortKey = {}
 let mapFunctions = {}
