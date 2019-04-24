@@ -1,4 +1,5 @@
 import 'element-matches';
+import 'custom-event-polyfill';
 
 let ShortKey = {}
 let mapFunctions = {}
@@ -110,7 +111,7 @@ const createShortcutIndex = (pKey) => {
 }
 
 const dispatchShortkeyEvent = (pKey) => {
-  const e = new Event('shortkey', { bubbles: false })
+  const e = new CustomEvent('shortkey', { bubbles: false })
   if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
   const elm = mapFunctions[pKey].el
   elm[elm.length - 1].dispatchEvent(e)
