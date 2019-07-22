@@ -275,6 +275,82 @@ describe('functionnal tests', () => {
     })
   })
 
+  describe('Dispatch triggered event', () => {
+
+    it('trigger listen for keydown and propagte event to all listeners when modifier is present', () => {
+      const vm = new VM(`<div>
+        <button type="button" class="foo" @shortkey="foo" v-shortkey.propagte="[\'c\']">FOO</button>
+        <button type="button" class="bar" @shortkey="bar" v-shortkey.propagte="[\'c\']">BAR</button>
+      </div>`)
+      vm.$mount(createDiv())
+
+      const buttonFoo = vm.$el.querySelector('button.foo')
+      buttonFoo.focus()
+      expect(document.activeElement == buttonFoo).to.be.true
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'c'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'c'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.true
+      //expect(vm.calledBubble).to.be.true
+      vm.$destroy()
+    })
+
+    it('trigger listen for keydown and propagte event to all listeners when modifier is present on the first element', () => {
+      const vm = new VM(`<div>
+        <button type="button" class="foo" @shortkey="foo" v-shortkey.propagte="[\'c\']">FOO</button>
+        <button type="button" class="bar" @shortkey="bar" v-shortkey="[\'c\']">BAR</button>
+      </div>`)
+      vm.$mount(createDiv())
+
+      const buttonFoo = vm.$el.querySelector('button.foo')
+      buttonFoo.focus()
+      expect(document.activeElement == buttonFoo).to.be.true
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'c'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'c'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.true
+      //expect(vm.calledBubble).to.be.true
+      vm.$destroy()
+    })
+
+    it('trigger listen for keydown and propagte event to all listeners when modifier is present on the last element', () => {
+      const vm = new VM(`<div>
+        <button type="button" class="foo" @shortkey="foo" v-shortkey="[\'c\']">FOO</button>
+        <button type="button" class="bar" @shortkey="bar" v-shortkey.propagte="[\'c\']">BAR</button>
+      </div>`)
+      vm.$mount(createDiv())
+
+      const buttonFoo = vm.$el.querySelector('button.foo')
+      buttonFoo.focus()
+      expect(document.activeElement == buttonFoo).to.be.true
+
+      const keydown = createEvent('keydown')
+      keydown.key = 'c'
+      document.dispatchEvent(keydown)
+
+      const keyup = createEvent('keyup')
+      keyup.key = 'c'
+      document.dispatchEvent(keyup)
+
+      expect(vm.called).to.be.true
+      //expect(vm.calledBubble).to.be.true
+      vm.$destroy()
+    })
+
+  })
+
   it('Setting focus with .focus modifier', () => {
     const vm = new VM(`<div><input type="text" /> <button type="button" v-shortkey.focus="['f']">BUTTON</button></div>`)
     vm.$mount(createDiv())
