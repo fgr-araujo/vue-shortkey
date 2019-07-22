@@ -30,7 +30,6 @@ The function in the modifier __@shortkey__ will be called repeatedly while the k
 <button v-shortkey.once="['ctrl', 'alt', 'o']" @shortkey="theAction()">Open</button>
 ```
 
-
 #### Multi keys
 ```html
 <button v-shortkey="{up: ['arrowup'], down: ['arrowdown']}" @shortkey="theAction">Joystick</button>
@@ -67,6 +66,13 @@ The example below shows how to do this
 Use the modifier `native` to catch the event.
 ```html
  <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.native="theAction()"></my-component>
+```
+
+#### Multiple listeners
+Use the modifier `propagate` to let the event propagate to other listeners
+```html
+ <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.propagate="anAction()"></my-component>
+ <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.propagate="aDifferentAction()"></my-component>
 ```
 
 #### Key list
