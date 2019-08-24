@@ -143,6 +143,24 @@ With the dynamism offered by Vue, you can easily create shortcuts dynamically
 </li>
 ```
 
+#### Integrating with Nuxt
+
+Create `/plugins/vue-shortkey.js` and add the following to it
+
+    import Vue from 'vue'
+    const ShortKey = require('vue-shortkey')
+
+    // add any custom shortkey config settings here
+    Vue.use(ShortKey, { prevent: ['input', 'textarea'] })
+
+    export default ShortKey
+
+Load the plugin in `nuxt.config.js`:
+
+    plugins: [ { src: '@/plugins/vue-shortkey.js', mode: 'client' }]
+
+The `mode: 'client'` is necessary to prevent Nuxt from loading the plugin during server-side rendering (SSR).
+
 ### Unit Test
 ```
 npm test
