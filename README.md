@@ -55,7 +55,7 @@ You can point the focus with the shortcut easily.
 ```
 
 #### Push button
-Sometimes you may need a shortcut works as a push button. It calls the function one time until you release the shortcut. When you release the shortcut, it call the same function again like a toggle. In these cases, insert the "push" modifier.
+Sometimes you may need a shortcut works as a push button. It calls the function one time when you click the button. When you release the shortcut, it calls the same function again like a toggle. In these cases, insert the "push" modifier.
 
 The example below shows how to do this
 ```html
