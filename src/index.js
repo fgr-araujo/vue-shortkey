@@ -91,7 +91,7 @@ const createShortcutIndex = (pKey) => {
   let k = ''
   if (definedCharKeys.length) { 
      definedCharKeys.forEach((keySequence) => {
-        if (keySequence.base === pKey.key && !pKey.shiftKey && !pKey.ctrlKey && !pKey.metaKey && !pKey.altKey ) { // Check if user pressed the 'base'key while NOT holding any modifier
+        if (keySequence.base === pKey.key && !pKey.shiftKey && !pKey.ctrlKey && !pKey.metaKey && !pKey.altKey ) {
           charKeyPressed = pKey.key
          }
     })
