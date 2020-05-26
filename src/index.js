@@ -6,8 +6,8 @@ let mapFunctions = {}
 let objAvoided = []
 let elementAvoided = []
 let keyPressed = false
-let definedCharKeys = [] // Empty array which will be filled with the user defined character sequence
-let charKeyPressed = false // Is true when user press the 'base' key
+let definedCharKeys = []
+let charKeyPressed = false
 
 const parseValue = (value) => {
   value = typeof value === 'string' ? JSON.parse(value.replace(/\'/gi, '"')) : value
@@ -74,12 +74,12 @@ ShortKey.encodeKey = (pKey) => {
   shortKey.ctrlKey = pKey.includes('ctrl')
   shortKey.metaKey = pKey.includes('meta')
   shortKey.altKey = pKey.includes('alt')
-  shortKey.charKey = (String(pKey[0]) + String(pKey[1])).match(/^[a-zA-Z0-9]{2}$/) // Check if user defined sequence is lowercase and letters
+  shortKey.charKey = (String(pKey[0]) + String(pKey[1])).match(/^[a-zA-Z0-9]{2}$/)
   if (shortKey.charKey) {
     const chars = {}
     chars.base = shortKey.charKey.input[0]
     chars.action = shortKey.charKey.input[1]
-    definedCharKeys.push(chars) // Fill definedCharKeys object with the 'base' and 'action'value 
+    definedCharKeys.push(chars)
   }
   let indexedKeys = createShortcutIndex(shortKey)
   const vKey = pKey.filter((item) => !['shift', 'ctrl', 'meta', 'alt'].includes(item))
@@ -185,7 +185,6 @@ if (process && process.env && process.env.NODE_ENV !== 'test') {
         }
       }
       keyPressed = false
-      // If user defined a sequence of letters, check if the released key was the 'base' key
       if (definedCharKeys.length) {
         definedCharKeys.forEach((keySequence) => {
           if (keySequence.base === pKey.key) { 
