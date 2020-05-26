@@ -129,7 +129,7 @@ const createShortcutIndex = (pKey) => {
         k = keySequence.base + keySequence.action
       }
    })
- } else if (( !charKeyPressed && pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}|\//g.test(pKey.key)) {
+ } else if (( !charKeyPressed && pKey.key && pKey.key !== " " && pKey.key.length === 1) || /F\d{1,2}|\//g.test(pKey.key)) {
     k += pKey.key.toLowerCase()
   }
   return k
