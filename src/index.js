@@ -6,6 +6,8 @@ let mapFunctions = {}
 let objAvoided = []
 let elementAvoided = []
 let keyPressed = false
+let definedCharKeys = []
+let charKeyPressed = false
 
 const parseValue = (value) => {
   value = typeof value === 'string' ? JSON.parse(value.replace(/\'/gi, '"')) : value
@@ -72,6 +74,13 @@ ShortKey.encodeKey = (pKey) => {
   shortKey.ctrlKey = pKey.includes('ctrl')
   shortKey.metaKey = pKey.includes('meta')
   shortKey.altKey = pKey.includes('alt')
+  shortKey.charKey = (String(pKey[0]) + String(pKey[1])).match(/^[a-zA-Z0-9]{2}$/)
+  if (shortKey.charKey) {
+    const chars = {}
+    chars.base = shortKey.charKey.input[0]
+    chars.action = shortKey.charKey.input[1]
+    definedCharKeys.push(chars)
+  }
   let indexedKeys = createShortcutIndex(shortKey)
   const vKey = pKey.filter((item) => !['shift', 'ctrl', 'meta', 'alt'].includes(item))
   indexedKeys += vKey.join('')
@@ -80,6 +89,13 @@ ShortKey.encodeKey = (pKey) => {
 
 const createShortcutIndex = (pKey) => {
   let k = ''
+  if (definedCharKeys.length) { 
+     definedCharKeys.forEach((keySequence) => {
+        if (keySequence.base === pKey.key && !pKey.shiftKey && !pKey.ctrlKey && !pKey.metaKey && !pKey.altKey ) {
+          charKeyPressed = pKey.key
+         }
+    })
+  }
   if (pKey.key === 'Shift' || pKey.shiftKey) { k += 'shift' }
   if (pKey.key === 'Control' || pKey.ctrlKey) { k += 'ctrl' }
   if (pKey.key === 'Meta'|| pKey.metaKey) { k += 'meta' }
@@ -107,7 +123,15 @@ const createShortcutIndex = (pKey) => {
   if (pKey.key === 'ScrollLock') { k += 'scrolllock' }
   if (pKey.key === 'BrowserHome') { k += 'browserhome' }
   if (pKey.key === 'MediaSelect') { k += 'mediaselect' }
-  if ((pKey.key && pKey.key !== ' ' && pKey.key.length === 1) || /F\d{1,2}|\//g.test(pKey.key)) k += pKey.key.toLowerCase()
+  if (charKeyPressed) {
+    definedCharKeys.forEach((keySequence) => {
+      if ((keySequence.base + keySequence.action) === (charKeyPressed + pKey.key)) { 
+        k = keySequence.base + keySequence.action
+      }
+   })
+ } else if (( !charKeyPressed && pKey.key && pKey.key !== " " && pKey.key.length === 1) || /F\d{1,2}|\//g.test(pKey.key)) {
+    k += pKey.key.toLowerCase()
+  }
   return k
 }
 
@@ -161,7 +185,14 @@ if (process && process.env && process.env.NODE_ENV !== 'test') {
         }
       }
       keyPressed = false
-    }, true)
+      if (definedCharKeys.length) {
+        definedCharKeys.forEach((keySequence) => {
+          if (keySequence.base === pKey.key) { 
+            charKeyPressed = false
+          }
+        })
+       }
+     }, true)
   })()
 }
 
