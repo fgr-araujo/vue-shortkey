@@ -123,6 +123,7 @@ const createShortcutIndex = (pKey) => {
   if (pKey.key === 'ScrollLock') { k += 'scrolllock' }
   if (pKey.key === 'BrowserHome') { k += 'browserhome' }
   if (pKey.key === 'MediaSelect') { k += 'mediaselect' }
+  console.log(charKeyPressed)
   if (charKeyPressed) {
     definedCharKeys.forEach((keySequence) => {
       if ((keySequence.base + keySequence.action) === (charKeyPressed + pKey.key)) { 
