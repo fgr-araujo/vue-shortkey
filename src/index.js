@@ -1,8 +1,6 @@
 import 'element-matches';
 import 'custom-event-polyfill';
 
-//  This is a test!
-
 let ShortKey = {}
 let mapFunctions = {}
 let objAvoided = []
