@@ -1,6 +1,8 @@
 import 'element-matches';
 import 'custom-event-polyfill';
 
+//  This is a test!
+
 let ShortKey = {}
 let mapFunctions = {}
 let objAvoided = []
@@ -123,7 +125,6 @@ const createShortcutIndex = (pKey) => {
   if (pKey.key === 'ScrollLock') { k += 'scrolllock' }
   if (pKey.key === 'BrowserHome') { k += 'browserhome' }
   if (pKey.key === 'MediaSelect') { k += 'mediaselect' }
-  console.log(charKeyPressed)
   if (charKeyPressed) {
     definedCharKeys.forEach((keySequence) => {
       if ((keySequence.base + keySequence.action) === (charKeyPressed + pKey.key)) { 
