@@ -5,16 +5,16 @@
 [![npm](https://img.shields.io/npm/dt/vue-shortkey.svg)](https://www.npmjs.com/package/vue-shortkey)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
-Vue-ShortKey - plugin for VueJS 2.x accepts shortcuts globaly and in a single listener.
+Vue3-ShortKey - a fork/port of `vue-shortkey` for VueJS 3.x accepts shortcuts globaly and in a single listener. I'm not vue3 expert, but I edited this plugin until it started working on Vue-cli with Vue 3.
 
 ## Install
 ```
-npm install vue-shortkey --save
+npm install vue3-shortkey --save
 ```
 
 ## Usage
 ```javascript
-Vue.use(require('vue-shortkey'))
+Vue.use(require('vue3-shortkey'))
 ```
 Add the shortkey directive to the elements that accept the shortcut.
 The shortkey must have explicitly which keys will be used.
@@ -126,12 +126,12 @@ You can avoid shortcuts within fields if you really need it. This can be done in
 * Generalizing type of element that will not perform shortcut. To do this, insert a list of elements in the global method.
 
 ```javascript
-Vue.use('vue-shortkey', { prevent: ['input', 'textarea'] })
+Vue.use('vue3-shortkey', { prevent: ['input', 'textarea'] })
 ```
 
 * Or even by class
 ```javascript
-Vue.use('vue-shortkey', { prevent: ['.my-class-name', 'textarea.class-of-textarea'] })
+Vue.use('vue3-shortkey', { prevent: ['.my-class-name', 'textarea.class-of-textarea'] })
 ```
 
 #### Other uses
@@ -151,7 +151,9 @@ With the dynamism offered by Vue, you can easily create shortcuts dynamically
 
 #### Integrating with Nuxt
 
-Create `/plugins/vue-shortkey.js` and add the following to it
+## Nuxt doesn't support Vue3 yet, use the original package for NuxtJS.
+
+Create `/plugins/vue3-shortkey.js` and add the following to it
 
 ```javascript
 import Vue from 'vue'
