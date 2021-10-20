@@ -111,8 +111,9 @@ const createShortcutIndex = (pKey) => {
   return k
 }
 
-const dispatchShortkeyEvent = (pKey) => {
+const dispatchShortkeyEvent = (pKey, originalEvent) => {
   const e = new CustomEvent('shortkey', { bubbles: false })
+  e.originalEvent = originalEvent;
   if (mapFunctions[pKey].key) e.srcKey = mapFunctions[pKey].key
   const elm = mapFunctions[pKey].el
   if (!mapFunctions[pKey].propagate) {
@@ -122,9 +123,9 @@ const dispatchShortkeyEvent = (pKey) => {
   }
 }
 
-ShortKey.keyDown = (pKey) => {
+ShortKey.keyDown = (pKey, e) => {
   if ((!mapFunctions[pKey].once && !mapFunctions[pKey].push) || (mapFunctions[pKey].push && !keyPressed)) {
-    dispatchShortkeyEvent(pKey)
+    dispatchShortkeyEvent(pKey, e)
   }
 }
 
@@ -139,7 +140,7 @@ if (process && process.env && process.env.NODE_ENV !== 'test') {
           pKey.stopPropagation()
         }
         if (mapFunctions[decodedKey].focus) {
-          ShortKey.keyDown(decodedKey)
+          ShortKey.keyDown(decodedKey, pKey)
           keyPressed = true
         } else if (!keyPressed) {
           const elm = mapFunctions[decodedKey].el
@@ -157,7 +158,7 @@ if (process && process.env && process.env.NODE_ENV !== 'test') {
           pKey.stopPropagation()
         }
         if (mapFunctions[decodedKey].once || mapFunctions[decodedKey].push) {
-          dispatchShortkeyEvent(decodedKey);
+          dispatchShortkeyEvent(decodedKey, pKey);
         }
       }
       keyPressed = false
