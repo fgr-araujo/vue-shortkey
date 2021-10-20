@@ -71,8 +71,8 @@ Use the modifier `native` to catch the event.
 #### Multiple listeners
 Use the modifier `propagate` to let the event propagate to other listeners
 ```html
- <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.propagate="anAction()"></my-component>
- <my-component v-shortkey="['ctrl', 'alt', 'o']" @shortkey.propagate="aDifferentAction()"></my-component>
+ <my-component v-shortkey.propagate="['ctrl', 'alt', 'o']" @shortkey="anAction()"></my-component>
+ <my-component v-shortkey.propagate="['ctrl', 'alt', 'o']" @shortkey="aDifferentAction()"></my-component>
 ```
 
 #### Key list
