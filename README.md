@@ -75,6 +75,21 @@ Use the modifier `propagate` to let the event propagate to other listeners
  <my-component v-shortkey.propagate="['ctrl', 'alt', 'o']" @shortkey="aDifferentAction()"></my-component>
 ```
 
+#### Handling original event
+
+The original key event will be passed along with the shortkey event. You can manually stop propagation:
+```html
+<button v-shortkey="['arrowup']" @shortkey="theAction">Up</button>
+```
+
+```javascript
+methods: {
+  theAction (event) {
+      event.originalEvent.stopPropagation();
+  },
+},
+```
+
 #### Key list
 | Key                        | Shortkey Name |
 |----------------------------|---------------|
