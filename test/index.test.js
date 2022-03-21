@@ -114,8 +114,7 @@ describe('functionnal tests', () => {
 
     it('listen for keydown and dispatch event with object key', (done) => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
-
-      const stubFoo = sinon.stub(vm, 'foo').callsFake(fn => {
+      const stubFoo = sinon.stub(vm._component.methods, 'foo').callsFake(fn => {
         expect(fn.srcKey).to.equal('option1')
         stubFoo.restore()
         vm.unmount()

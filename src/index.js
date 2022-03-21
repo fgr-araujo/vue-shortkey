@@ -58,7 +58,7 @@ ShortKey.install = (app, options) => {
       const newValue = parseValue(binding.value)
       bindValue(newValue, el, binding)
     },
-    unMounted: (el, binding) => {
+    unmounted: (el, binding) => {
       const value = parseValue(binding.value)
       unbindValue(value, el)
     }
