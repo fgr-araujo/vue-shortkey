@@ -28,7 +28,7 @@
   "devDependencies": {
     "array.prototype.find": "^2.0.4",
     "babel-core": "^6.0.0",
-    "babel-loader": "^6.0.0",
+    "babel-loader": "^9.1.0",
     "babel-preset-es2015": "^6.0.0",
     "babel-preset-stage-3": "^6.24.1",
     "babel-register": "^6.24.1",
