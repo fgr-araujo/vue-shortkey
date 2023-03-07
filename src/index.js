@@ -34,11 +34,13 @@ const bindValue = (value, el, binding, vnode) => {
 const unbindValue = (value, el) => {
   for (let key in value) {
     const k = ShortKey.encodeKey(value[key])
-    const idxElm = mapFunctions[k].el.indexOf(el)
-    if (mapFunctions[k].el.length > 1 && idxElm > -1) {
-      mapFunctions[k].el.splice(idxElm, 1)
-    } else {
-      delete mapFunctions[k]
+    if(mapFunctions[k]) {
+      const idxElm = mapFunctions[k].el.indexOf(el)
+      if (mapFunctions[k].el.length > 1 && idxElm > -1) {
+        mapFunctions[k].el.splice(idxElm, 1)
+      } else {
+        delete mapFunctions[k]
+      }
     }
   }
 }
