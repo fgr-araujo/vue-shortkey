@@ -5,7 +5,7 @@ var webpackConfig = require('../build/webpack.config.js');
 webpackConfig.devtool = false;
 webpackConfig.resolve = {
   alias: {
-    'vue$': 'vue/dist/vue.esm.js'
+    'vue$': 'vue/dist/vue.esm-browser.js'
   }
 };
 
@@ -65,7 +65,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+    browsers: ['Chrome'],
 
 
     // Continuous Integration mode

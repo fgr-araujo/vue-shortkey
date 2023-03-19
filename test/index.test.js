@@ -1,13 +1,12 @@
 import './Pollyfills'
 import find from  'array.prototype.find'
 import {expect} from 'chai'
-import Vue from 'vue'
+import {createApp, nextTick} from 'vue'
 import Shortkey from '../src/index.js'
 
 find.shim()
 
-Vue.use(Shortkey, { prevent: ['.disableshortkey', '.disableshortkey textarea'] })
-const VM = template => new Vue({
+const VM = template => createApp({
   template,
   data() {
     return {
@@ -23,7 +22,7 @@ const VM = template => new Vue({
       this.calledBubble = true
     }
   }
-})
+}).use(Shortkey, { prevent: ['.disableshortkey', '.disableshortkey textarea'] })
 
 function createEvent(name='keydown') {
   const event = document.createEvent('HTMLEvents')
@@ -82,7 +81,7 @@ describe('functionnal tests', () => {
   describe('Dispatch triggered event', () => {
     it('listen for keydown and dispatch simple event', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -92,15 +91,15 @@ describe('functionnal tests', () => {
       keyup.key = 'q'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.true
-      vm.$destroy()
+      expect(root.called).to.be.true
+      vm.unmount()
     })
 
     it('unbind simple events', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'q\']"></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      vm.$destroy()
+      vm.unmount()
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -110,19 +109,18 @@ describe('functionnal tests', () => {
       keyup.key = 'q'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.false
+      expect(root.called).to.be.false
     });
 
     it('listen for keydown and dispatch event with object key', (done) => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
-
-      const stubFoo = sinon.stub(vm, 'foo').callsFake(fn => {
+      const stubFoo = sinon.stub(vm._component.methods, 'foo').callsFake(fn => {
         expect(fn.srcKey).to.equal('option1')
         stubFoo.restore()
-        vm.$destroy()
+        vm.unmount()
         done()
       })
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -132,13 +130,13 @@ describe('functionnal tests', () => {
       keyup.key = 'q'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.true
+      expect(root.called).to.be.true
     })
 
     it('unbind event with object key', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"></div>')
-      vm.$mount(createDiv())
-      vm.$destroy()
+      const root = vm.mount(createDiv())
+      vm.unmount()
 
       const keydown = createEvent('keydown')
       keydown.key = 'q'
@@ -148,7 +146,7 @@ describe('functionnal tests', () => {
       keyup.key = 'q'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.false
+      expect(root.called).to.be.false
     })
   })
 
@@ -156,9 +154,9 @@ describe('functionnal tests', () => {
   describe('Don`t dispatch triggered event', () => {
     it('dont trigger listen for keydown and dispatch event', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea v-shortkey.avoid></textarea></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const textarea = vm.$el.querySelector('textarea')
+      const textarea = root.$el.querySelector('textarea')
       textarea.focus()
       expect(document.activeElement == textarea).to.be.true
 
@@ -170,15 +168,15 @@ describe('functionnal tests', () => {
       keyup.key = 'b'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.false
-      vm.$destroy()
+      expect(root.called).to.be.false
+      vm.unmount()
     })
 
     it('does not trigger events when its class is in the prevent list', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea class="disableshortkey"></textarea></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const textarea = vm.$el.querySelector('textarea')
+      const textarea = root.$el.querySelector('textarea')
       textarea.focus()
       expect(document.activeElement == textarea).to.be.true
 
@@ -190,15 +188,15 @@ describe('functionnal tests', () => {
       keyup.key = 'b'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.false
-      vm.$destroy()
+      expect(root.called).to.be.false
+      vm.unmount()
     })
 
     it('does not trigger events when one of its classes is in the prevent list', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']"><textarea class="disableshortkey stylingclass"></textarea></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const textarea = vm.$el.querySelector('textarea')
+      const textarea = root.$el.querySelector('textarea')
       textarea.focus()
       expect(document.activeElement == textarea).to.be.true
 
@@ -210,15 +208,15 @@ describe('functionnal tests', () => {
       keyup.key = 'b'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.false
-      vm.$destroy()
+      expect(root.called).to.be.false
+      vm.unmount()
     })
 
     it('does not trigger events when it gets matched by one item in the prevent list', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']" class="disableshortkey"><textarea class="stylingclass"></textarea></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const textarea = vm.$el.querySelector('textarea')
+      const textarea = root.$el.querySelector('textarea')
       textarea.focus()
       expect(document.activeElement == textarea).to.be.true
 
@@ -230,15 +228,15 @@ describe('functionnal tests', () => {
       keyup.key = 'b'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.false
-      vm.$destroy()
+      expect(root.called).to.be.false
+      vm.unmount()
     })
 
     it('does trigger events when only the parent element gets matched by one item in the prevent list', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="[\'b\']" class="disableshortkey"><input type="text" /></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const input = vm.$el.querySelector('input')
+      const input = root.$el.querySelector('input')
       input.focus()
       expect(document.activeElement == input).to.be.true
 
@@ -250,15 +248,15 @@ describe('functionnal tests', () => {
       keyup.key = 'b'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.true
-      vm.$destroy()
+      expect(root.called).to.be.true
+      vm.unmount()
     })
 
     it('listen for keydown and dispatch event with object key', () => {
       const vm = new VM('<div @shortkey="foo" v-shortkey="{option1: [\'q\'], option2: [\'a\']}"><textarea v-shortkey.avoid></textarea></div>')
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const textarea = vm.$el.querySelector('textarea')
+      const textarea = root.$el.querySelector('textarea')
       textarea.focus()
       expect(document.activeElement == textarea).to.be.true
 
@@ -270,8 +268,8 @@ describe('functionnal tests', () => {
       keyup.key = 'q'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.false
-      vm.$destroy()
+      expect(root.called).to.be.false
+      vm.unmount()
     })
   })
 
@@ -282,9 +280,9 @@ describe('functionnal tests', () => {
         <button type="button" class="foo" @shortkey="foo" v-shortkey.propagte="[\'c\']">FOO</button>
         <button type="button" class="bar" @shortkey="bar" v-shortkey.propagte="[\'c\']">BAR</button>
       </div>`)
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const buttonFoo = vm.$el.querySelector('button.foo')
+      const buttonFoo = root.$el.querySelector('button.foo')
       buttonFoo.focus()
       expect(document.activeElement == buttonFoo).to.be.true
 
@@ -296,9 +294,9 @@ describe('functionnal tests', () => {
       keyup.key = 'c'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.true
-      //expect(vm.calledBubble).to.be.true
-      vm.$destroy()
+      expect(root.called).to.be.true
+      //expect(root.calledBubble).to.be.true
+      vm.unmount()
     })
 
     it('trigger listen for keydown and propagte event to all listeners when modifier is present on the first element', () => {
@@ -306,9 +304,9 @@ describe('functionnal tests', () => {
         <button type="button" class="foo" @shortkey="foo" v-shortkey.propagte="[\'c\']">FOO</button>
         <button type="button" class="bar" @shortkey="bar" v-shortkey="[\'c\']">BAR</button>
       </div>`)
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const buttonFoo = vm.$el.querySelector('button.foo')
+      const buttonFoo = root.$el.querySelector('button.foo')
       buttonFoo.focus()
       expect(document.activeElement == buttonFoo).to.be.true
 
@@ -320,9 +318,9 @@ describe('functionnal tests', () => {
       keyup.key = 'c'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.true
-      //expect(vm.calledBubble).to.be.true
-      vm.$destroy()
+      expect(root.called).to.be.true
+      //expect(root.calledBubble).to.be.true
+      vm.unmount()
     })
 
     it('trigger listen for keydown and propagte event to all listeners when modifier is present on the last element', () => {
@@ -330,9 +328,9 @@ describe('functionnal tests', () => {
         <button type="button" class="foo" @shortkey="foo" v-shortkey="[\'c\']">FOO</button>
         <button type="button" class="bar" @shortkey="bar" v-shortkey.propagte="[\'c\']">BAR</button>
       </div>`)
-      vm.$mount(createDiv())
+      const root = vm.mount(createDiv())
 
-      const buttonFoo = vm.$el.querySelector('button.foo')
+      const buttonFoo = root.$el.querySelector('button.foo')
       buttonFoo.focus()
       expect(document.activeElement == buttonFoo).to.be.true
 
@@ -344,18 +342,18 @@ describe('functionnal tests', () => {
       keyup.key = 'c'
       document.dispatchEvent(keyup)
 
-      expect(vm.called).to.be.true
-      //expect(vm.calledBubble).to.be.true
-      vm.$destroy()
+      expect(root.called).to.be.true
+      //expect(root.calledBubble).to.be.true
+      vm.unmount()
     })
 
   })
 
   it('Setting focus with .focus modifier', () => {
     const vm = new VM(`<div><input type="text" /> <button type="button" v-shortkey.focus="['f']">BUTTON</button></div>`)
-    vm.$mount(createDiv())
+    const root = vm.mount(createDiv())
 
-    const inputText = vm.$el.querySelector('input')
+    const inputText = root.$el.querySelector('input')
     inputText.focus()
     expect(document.activeElement == inputText).to.be.true
 
@@ -367,16 +365,16 @@ describe('functionnal tests', () => {
     keyup.key = 'f'
     document.dispatchEvent(keyup)
 
-    const buttonInput = vm.$el.querySelector('button')
+    const buttonInput = root.$el.querySelector('button')
     expect(document.activeElement == buttonInput).to.be.true
-    vm.$destroy()
+    vm.unmount()
   })
 
   it('Bring push button with .push modifier', () => {
     const vm = new VM(`<div><button type="button" v-shortkey.push="['p']" @shortkey="foo()">BUTTON</button></div>`)
-    vm.$mount(createDiv())
+    const root = vm.mount(createDiv())
 
-    const spyFoo = sinon.spy(vm, 'foo')
+    const spyFoo = sinon.spy(root, 'foo')
 
     const keydown = createEvent('keydown')
     keydown.key = 'p'
@@ -388,12 +386,12 @@ describe('functionnal tests', () => {
 
     expect(spyFoo.callCount).to.equal(2)
     spyFoo.restore()
-    vm.$destroy()
+    vm.unmount()
   })
 
   it('Testing delete key', () => {
     const vm = new VM(`<button @shortkey="foo" v-shortkey="['del']"></button>`)
-    vm.$mount(createDiv())
+    const root = vm.mount(createDiv())
 
     const keydown = createEvent('keydown')
     keydown.key = 'Delete'
@@ -403,13 +401,13 @@ describe('functionnal tests', () => {
     keyup.key = 'Delete'
     document.dispatchEvent(keyup)
 
-    expect(vm.called).to.be.true
-    vm.$destroy()
+    expect(root.called).to.be.true
+    vm.unmount()
   })
 
   it('Testing ? key', () => {
     const vm = new VM(`<button @shortkey="foo" v-shortkey="['shift', '?']"></button>`)
-    vm.$mount(createDiv())
+    const root = vm.mount(createDiv())
 
     const keydown = createEvent('keydown')
     keydown.shiftKey = true
@@ -421,8 +419,8 @@ describe('functionnal tests', () => {
     keydown.key = '?'
     document.dispatchEvent(keyup)
 
-    expect(vm.called).to.be.true
-    vm.$destroy()
+    expect(root.called).to.be.true
+    vm.unmount()
   })
 
   it("Update the binding", (done) => {
@@ -430,7 +428,7 @@ describe('functionnal tests', () => {
                       <div v-if="!called" class="first" @shortkey="foo" v-shortkey="[\'q\']">foo</div>
                       <div v-else         class="test"  @shortkey="bar" v-shortkey="[\'g\']">bar</div>
                     </div>`)
-    vm.$mount(createDiv())
+    const root = vm.mount(createDiv())
     const keydown = createEvent('keydown')
     keydown.key = 'q'
     document.dispatchEvent(keydown)
@@ -439,8 +437,8 @@ describe('functionnal tests', () => {
     keydown.key = 'q'
     document.dispatchEvent(keyup)
 
-    expect(vm.called).to.be.true
-    Vue.nextTick(() => {
+    expect(root.called).to.be.true
+    nextTick(() => {
       const keydown2 = createEvent('keydown')
       keydown2.key = 'g'
       document.dispatchEvent(keydown2)
@@ -449,23 +447,23 @@ describe('functionnal tests', () => {
       keydown2.key = 'g'
       document.dispatchEvent(keyup2)
 
-      expect(vm.calledBubble).to.be.true
-      vm.$destroy()
+      expect(root.calledBubble).to.be.true
+      vm.unmount()
       done()
     })
   })
 
   it('Prevent bubble event', () => {
     const vm = new VM('<div @shortkey="bar" v-shortkey="[\'a\']"><button type="button" @shortkey="foo" v-shortkey="[\'b\']">TEST</button></div>')
-    vm.$mount(createDiv())
+    const root = vm.mount(createDiv())
 
-    const textarea = vm.$el.querySelector('button')
+    const textarea = root.$el.querySelector('button')
     const keydown = createEvent('keydown')
     keydown.key = 'b'
     document.dispatchEvent(keydown)
 
-    expect(vm.called).to.be.true
-    expect(vm.calledBubble).to.be.false
-    vm.$destroy()
+    expect(root.called).to.be.true
+    expect(root.calledBubble).to.be.false
+    vm.unmount()
   })
 })
