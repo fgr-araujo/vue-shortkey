@@ -1,4 +1,5 @@
 ![vue-shortkey logo](https://github.com/iFgR/vue-shortkey/blob/master/logo/shortkey.png?raw=true)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FiFgR%2Fvue-shortkey.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FiFgR%2Fvue-shortkey?ref=badge_shield)
 
 ![CircleCI status](https://circleci.com/gh/iFgR/vue-shortkey.svg?style=shield&circle-token=:circle-token)
 [![npm version](https://badge.fury.io/js/vue-shortkey.svg)](https://badge.fury.io/js/vue-shortkey)
@@ -175,3 +176,7 @@ The `mode: 'client'` is necessary to prevent Nuxt from loading the plugin during
 ```
 npm test
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FiFgR%2Fvue-shortkey.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FiFgR%2Fvue-shortkey?ref=badge_large)
