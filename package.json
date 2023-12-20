@@ -1,5 +1,5 @@
 {
-  "name": "vue3-shortkey",
+  "name": "vue-shortkey",
   "description": "A vue-shortkey port for VueJS 3.x accepts shortcuts globaly and in a single listener.",
   "version": "4.0.0",
   "author": "iFgR <ifgr.fagner@gmail.com>",
