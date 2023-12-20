@@ -27,7 +27,7 @@ const bindValue = (value, el, binding) => {
     })
     objAvoided.push(el)
   } else {
-    mappingFunctions({b: value, push, once, focus, propagte, el})
+    mappingFunctions({b: value, push, once, focus, propagte, el: vnode.el})
   }
 }
 
@@ -47,7 +47,7 @@ const unbindValue = (value, el) => {
 
 ShortKey.install = (app, options) => {
   elementAvoided = [...(options && options.prevent ? options.prevent : [])]
-  app.directive('shortkey', {
+  Vue.directive('shortkey', {
     beforeMount: (el, binding, vnode) => {
       // Mapping the commands
       const value = parseValue(binding.value)
